@@ -159,31 +159,49 @@
     </div>
 
     <script>
-        function copyToClipboard(elementId, btnElement) {
-            // 獲取要複製的文字 (Get text to copy)
-            const textToCopy = document.getElementById(elementId).innerText;
+       // 自動偵測設備系統的函數 (Function to auto-detect device OS)
+        function getDevicePrefix() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
             
-            // 建立一個暫時的 textarea 元素 (Create a temporary textarea)
+            if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+                return "【iPhone/iPad】";
+            }
+            if (/android/i.test(ua)) {
+                return "【安卓手機 (Android)】";
+            }
+            if (/Macintosh|Mac OS X/i.test(ua)) {
+                return "【Mac 電腦】";
+            }
+            if (/Windows/i.test(ua)) {
+                return "【Windows 電腦】";
+            }
+            return ""; // 如果都無法辨識，就不加字 (Return empty if unrecognized)
+        }
+
+        function copyToClipboard(elementId, btnElement) {
+            // 1. 獲取原始標語文字 (Get original slogan text)
+            const baseText = document.getElementById(elementId).innerText;
+            
+            // 2. 呼叫偵測函數獲取設備前綴字 (Call detection function to get prefix)
+            const devicePrefix = getDevicePrefix();
+            
+            // 3. 組合最終要複製的文字 (Combine final text to copy)
+            const textToCopy = devicePrefix + baseText;
+            
+            // 建立暫時的 textarea 元素執行複製 (Create temporary textarea to execute copy)
             const tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
-            
-            // 將元素加入 body，以避免畫面跳動並執行複製 (Append to body, prevent scrolling)
             tempTextArea.style.position = "fixed";
             tempTextArea.style.top = "-9999px";
             document.body.appendChild(tempTextArea);
-            
-            // 選擇並複製 (Select and copy)
             tempTextArea.select();
             document.execCommand("copy");
-            
-            // 移除暫時元素 (Remove temporary element)
             document.body.removeChild(tempTextArea);
 
             // 更改按鈕狀態 (Change button state)
             const originalHTML = btnElement.innerHTML;
             const originalBg = btnElement.className;
             
-            // 替換為成功狀態的按鈕內容與樣式 (Update to success state)
             btnElement.innerHTML = `
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 <span>已複製 <span class="text-sm font-normal opacity-90">(Copied!)</span></span>
