@@ -125,7 +125,7 @@
 
         async function fetchData() {
             try {
-                const targetUrl = 'all_brands_links.txt?t=' + new Date().getTime();
+                const targetUrl = 'iphone_full_links.txt?t=' + new Date().getTime();
                 const response = await fetch(targetUrl);
                 
                 if (!response.ok) throw new Error("HTTP Status: " + response.status);
