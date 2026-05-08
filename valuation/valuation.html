@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>手機王二手設備快選 </title>
+    <title>二手設備報價系統 - 零正則純字串版（Second-hand Device Quote System - Zero Regex Pure String Version）</title>
     <link rel="icon" href="data:,">
     <style>
         body { 
@@ -24,7 +24,6 @@
             text-align: center;
             border-left: 5px solid #0056b3;
         }
-        /* 新增：品牌頁籤樣式 (New: Brand Tabs Style) */
         .tabs-container {
             display: flex;
             flex-wrap: wrap;
@@ -52,7 +51,6 @@
             border-color: #004494;
             box-shadow: 0 4px 8px rgba(0,86,179,0.3);
         }
-        /* 卡片與網格區域 (Cards and Grid Area) */
         .series-title { 
             font-size: 22px; 
             font-weight: bold; 
@@ -120,14 +118,13 @@
         const tabsContainer = document.getElementById("brand-tabs");
         const cardsContainer = document.getElementById("cards-container");
         
-        let globalCategorizedData = {}; // 儲存所有品牌的資料 (Store all brand data)
-        let currentBrand = ''; // 紀錄目前選擇的品牌 (Record currently selected brand)
+        let globalCategorizedData = {}; 
+        let currentBrand = ''; 
 
         document.addEventListener("DOMContentLoaded", fetchData);
 
         async function fetchData() {
             try {
-                // 改為讀取綜合檔案 (Changed to read the consolidated file)
                 const targetUrl = 'all_brands_links.txt?t=' + new Date().getTime();
                 const response = await fetch(targetUrl);
                 
@@ -153,7 +150,7 @@
                 if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
                     if (lines[i].includes('/usedprices/')) {
                         if (i > 0 && !lines[i-1].startsWith('http')) {
-                            // 保留防斷行寫法 (Keep wrap-proof mechanism)
+                            // 嚴格字串切割 (Strict string split)
                             let rawTitle = lines[i-1];
                             let title = rawTitle.split('] ').pop().trim(); 
                             parsedModels.push({ title: title, url: lines[i] });
@@ -167,62 +164,69 @@
                 return;
             }
 
-            // 執行多品牌智慧分類 (Execute multi-brand smart categorization)
             globalCategorizedData = categorizeBrandsAndModels(parsedModels);
             renderBrandTabs();
         }
 
-        // 核心升級：雙層分類演算法 (Core Upgrade: Two-tier categorization algorithm)
+        // 終極改造：純字串判斷，完全移除正規表達式 (Ultimate Remake: Pure string checking, completely removed regex)
         function categorizeBrandsAndModels(models) {
             const brandsData = {};
 
             models.forEach(model => {
                 let title = model.title;
+                let upperTitle = title.toUpperCase(); // 轉大寫方便比對 (Convert to uppercase for easy comparison)
+                
                 let brand = "其他品牌 (Others)";
                 let seriesName = "其他型號 (Other Models)";
 
-                // 智慧識別各大廠牌 (Smart identification of major brands)
-                if (title.match(/Apple|iPhone/i)) {
+                if (upperTitle.includes("APPLE") || upperTitle.includes("IPHONE")) {
                     brand = "Apple";
-                    const match = title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
-                    seriesName = match ? "iPhone " + match[1] + " 系列 (Series)" : "其他 iPhone (Other iPhones)";
+                    if (upperTitle.includes("IPHONE 17")) seriesName = "iPhone 17 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE 16")) seriesName = "iPhone 16 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE 15")) seriesName = "iPhone 15 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE 14")) seriesName = "iPhone 14 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE 13")) seriesName = "iPhone 13 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE 12")) seriesName = "iPhone 12 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE 11")) seriesName = "iPhone 11 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE X")) seriesName = "iPhone X 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE SE")) seriesName = "iPhone SE 系列 (Series)";
+                    else if (upperTitle.includes("IPHONE 8") || upperTitle.includes("IPHONE 7")) seriesName = "iPhone 8/7 系列 (Series)";
+                    else if (upperTitle.includes("AIR")) seriesName = "iPhone Air 系列 (Series)";
+                    else seriesName = "其他 iPhone (Other iPhones)";
                 } 
-                else if (title.match(/SAMSUNG|Galaxy/i)) {
+                else if (upperTitle.includes("SAMSUNG") || upperTitle.includes("GALAXY")) {
                     brand = "SAMSUNG";
-                    const match = title.match(/Galaxy\s+([A-Za-z]+)/i); // 抓取 S, A, Z, Note 等 (Capture S, A, Z, Note, etc.)
-                    seriesName = match ? "Galaxy " + match[1] + " 系列 (Series)" : "其他 Samsung (Other Samsungs)";
+                    if (upperTitle.includes("GALAXY S")) seriesName = "Galaxy S 系列 (Series)";
+                    else if (upperTitle.includes("GALAXY A")) seriesName = "Galaxy A 系列 (Series)";
+                    else if (upperTitle.includes("GALAXY Z")) seriesName = "Galaxy Z 系列 (Series)";
+                    else if (upperTitle.includes("NOTE")) seriesName = "Galaxy Note 系列 (Series)";
+                    else seriesName = "其他 Samsung (Other Samsungs)";
                 } 
-                else if (title.match(/OPPO/i)) {
+                else if (upperTitle.includes("OPPO")) {
                     brand = "OPPO";
-                    const match = title.match(/OPPO\s+([A-Za-z]+)/i); // 抓取 Reno, Find 等 (Capture Reno, Find, etc.)
-                    seriesName = match ? "OPPO " + match[1] + " 系列 (Series)" : "其他 OPPO (Other OPPOs)";
+                    if (upperTitle.includes("RENO")) seriesName = "OPPO Reno 系列 (Series)";
+                    else if (upperTitle.includes("FIND")) seriesName = "OPPO Find 系列 (Series)";
+                    else if (upperTitle.includes(" A")) seriesName = "OPPO A 系列 (Series)";
+                    else seriesName = "其他 OPPO (Other OPPOs)";
                 } 
-                else if (title.match(/vivo/i)) {
+                else if (upperTitle.includes("VIVO")) {
                     brand = "vivo";
-                    const match = title.match(/vivo\s+([A-Za-z]+)/i); // 抓取 X, V, Y 等 (Capture X, V, Y, etc.)
-                    seriesName = match ? "vivo " + match[1] + " 系列 (Series)" : "其他 vivo (Other vivos)";
+                    if (upperTitle.includes(" X")) seriesName = "vivo X 系列 (Series)";
+                    else if (upperTitle.includes(" V")) seriesName = "vivo V 系列 (Series)";
+                    else if (upperTitle.includes(" Y")) seriesName = "vivo Y 系列 (Series)";
+                    else seriesName = "其他 vivo (Other vivos)";
                 }
-                else if (title.match(/ASUS|Zenfone|ROG/i)) {
+                else if (upperTitle.includes("ASUS") || upperTitle.includes("ZENFONE") || upperTitle.includes("ROG")) {
                     brand = "ASUS";
-                    const match = title.match(/Zenfone|ROG/i);
-                    seriesName = match ? match[0] + " 系列 (Series)" : "其他 ASUS (Other ASUS)";
+                    if (upperTitle.includes("ROG")) seriesName = "ROG 系列 (Series)";
+                    else if (upperTitle.includes("ZENFONE")) seriesName = "Zenfone 系列 (Series)";
+                    else seriesName = "其他 ASUS (Other ASUS)";
                 }
                 else {
-                    // 自動抓取第一單字為品牌 (Automatically extract the first word as brand)
-                    brand = title.split(' ')[0] || "其他 (Others)";
+                    let parts = title.split(' ');
+                    brand = parts.length > 0 ? parts[0] : "其他 (Others)";
                     seriesName = "所有機型 (All Models)";
                 }
 
                 if (!brandsData[brand]) brandsData[brand] = {};
-                if (!brandsData[brand][seriesName]) brandsData[brand][seriesName] = [];
-                brandsData[brand][seriesName].push(model);
-            });
-
-            // 將各品牌內部的系列進行排序 (Sort the series within each brand)
-            Object.keys(brandsData).forEach(b => {
-                const seriesObj = brandsData[b];
-                const sortedArray = Object.keys(seriesObj)
-                    .sort((a, b) => {
-                        const numRegex = /\d+/;
-                        const matchA = a.match(numRegex);
-                        const matchB = b.match(numRegex);
+                if (!brandsData
