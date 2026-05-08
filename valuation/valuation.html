@@ -2,7 +2,8 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>二手設備報價系統 - 除錯追蹤版（Second-hand Device Quote System - Debug Tracking Version）</title>
+    <title>二手設備報價系統 - 最終追蹤版（Second-hand Device Quote System - Final Tracking Version）</title>
+    <link rel="icon" href="data:,">
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -93,9 +94,9 @@
     </div>
 
     <script>
-      const container = document.getElementById("app-container");
+        const container = document.getElementById("app-container");
 
-        // 【追蹤點 1】確認網頁架構是否載入完畢 (Trace Point 1: Check if DOM is loaded)
+        // 【追蹤點 1】
         document.addEventListener("DOMContentLoaded", function() {
             console.log("【步驟 1】網頁架構載入完畢，準備啟動讀取程序 (Step 1: DOM loaded, preparing to fetch)");
             fetchData();
@@ -138,7 +139,7 @@
                 if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
                     if (lines[i].includes('/usedprices/')) {
                         if (i > 0 && !lines[i-1].startsWith('http')) {
-                            // 這裡的正規表達式有完整的結尾 /g
+                            // 修正後的正規表達式 (Corrected regex)
                             let title = lines[i-1].replace(/\/g, '').trim(); 
                             parsedModels.push({ title: title, url: lines[i] });
                         }
@@ -169,7 +170,7 @@
         function categorizeModels(models) {
             const categories = {};
             models.forEach(model => {
-                // 這裡的正規表達式有完整的結尾 /i
+                // 修正後的正規表達式 (Corrected regex)
                 const match = model.title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
                 let seriesName = "其他型號 系列 (Other Series)";
                 if (match && match[1]) {
@@ -183,7 +184,7 @@
 
             return Object.keys(categories)
                 .sort((a, b) => {
-                    // 這裡的正規表達式有完整的結尾 /
+                    // 修正後的正規表達式 (Corrected regex)
                     const matchA = a.match(/\d+/);
                     const matchB = b.match(/\d+/);
                     const numA = matchA ? parseInt(matchA[0], 10) : 0;
