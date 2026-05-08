@@ -121,28 +121,38 @@
         let globalCategorizedData = {}; 
         let currentBrand = ''; 
 
-        document.addEventListener("DOMContentLoaded", fetchData);
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("【步驟 1】網頁架構載入完畢，準備啟動讀取程序 (Step 1: DOM loaded, preparing to fetch)");
+            fetchData();
+        });
 
         async function fetchData() {
             try {
+                // 已完美切換回原本的檔名，維持您的作業習慣 (Perfectly switched back to the original filename to maintain your workflow)
                 const targetUrl = 'iphone_full_links.txt?t=' + new Date().getTime();
+                console.log("【步驟 2】開始向伺服器請求檔案 (Step 2: Start fetching file): " + targetUrl);
+                
                 const response = await fetch(targetUrl);
+                console.log("【步驟 3】伺服器回應狀態碼 (Step 3: Server status): " + response.status);
                 
                 if (!response.ok) throw new Error("HTTP Status: " + response.status);
                 
                 const text = await response.text();
+                console.log("【步驟 4】成功讀取文字資料，總字元數 (Step 4: Characters read): " + text.length);
+                
                 processData(text);
             } catch (error) {
-                console.error("【錯誤】(ERROR):", error);
+                console.error("【重大錯誤】(CRITICAL ERROR):", error);
                 cardsContainer.innerHTML = `<div class="error-msg">
                     <h3>⚠️ 系統讀取失敗 (System Read Failed)</h3>
-                    <p>請確認 <b>all_brands_links.txt</b> 是否已上傳至伺服器。(Please ensure all_brands_links.txt is uploaded.)</p>
+                    <p>請確認 <b>iphone_full_links.txt</b> 是否已上傳至伺服器。(Please ensure iphone_full_links.txt is uploaded.)</p>
                     <p style="font-size: 14px;">錯誤細節: ${error.message}</p>
                 </div>`;
             }
         }
 
         function processData(text) {
+            console.log("【步驟 5】開始解析文字內容 (Step 5: Start parsing text content)");
             const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
             const parsedModels = [];
 
@@ -150,7 +160,6 @@
                 if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
                     if (lines[i].includes('/usedprices/')) {
                         if (i > 0 && !lines[i-1].startsWith('http')) {
-                            // 嚴格字串切割 (Strict string split)
                             let rawTitle = lines[i-1];
                             let title = rawTitle.split('] ').pop().trim(); 
                             parsedModels.push({ title: title, url: lines[i] });
@@ -159,22 +168,25 @@
                 }
             }
 
+            console.log("【步驟 6】解析完成，找到有效資料數 (Step 6: Parsing complete, valid records): " + parsedModels.length);
+
             if (parsedModels.length === 0) {
                 cardsContainer.innerHTML = `<div class="error-msg"><h3>⚠️ 資料庫內容無效 (Invalid Database Content)</h3></div>`;
                 return;
             }
 
             globalCategorizedData = categorizeBrandsAndModels(parsedModels);
+            console.log("【步驟 7】動態分類完成，準備渲染畫面 (Step 7: Categorization complete)");
+            
             renderBrandTabs();
         }
 
-        // 終極改造：純字串判斷，完全移除正規表達式 (Ultimate Remake: Pure string checking, completely removed regex)
         function categorizeBrandsAndModels(models) {
             const brandsData = {};
 
             models.forEach(model => {
                 let title = model.title;
-                let upperTitle = title.toUpperCase(); // 轉大寫方便比對 (Convert to uppercase for easy comparison)
+                let upperTitle = title.toUpperCase(); 
                 
                 let brand = "其他品牌 (Others)";
                 let seriesName = "其他型號 (Other Models)";
@@ -229,4 +241,88 @@
                 }
 
                 if (!brandsData[brand]) brandsData[brand] = {};
-                if (!brandsData
+                if (!brandsData[brand][seriesName]) brandsData[brand][seriesName] = [];
+                brandsData[brand][seriesName].push(model);
+            });
+
+            Object.keys(brandsData).forEach(b => {
+                const seriesObj = brandsData[b];
+                const sortedArray = Object.keys(seriesObj)
+                    .sort((a, b) => {
+                        let numA = extractNumberFromString(a);
+                        let numB = extractNumberFromString(b);
+                        if (numA !== numB) { return numB - numA; }
+                        return a.localeCompare(b);
+                    })
+                    .map(key => ({ seriesName: key, models: seriesObj[key] }));
+                brandsData[b] = sortedArray;
+            });
+
+            return brandsData;
+        }
+
+        function extractNumberFromString(str) {
+            let numStr = "";
+            for(let i = 0; i < str.length; i++) {
+                if (str[i] >= '0' && str[i] <= '9') {
+                    numStr += str[i];
+                } else if (numStr.length > 0) {
+                    break;
+                }
+            }
+            return numStr.length > 0 ? parseInt(numStr, 10) : 0;
+        }
+
+        function renderBrandTabs() {
+            const brands = Object.keys(globalCategorizedData);
+            tabsContainer.innerHTML = "";
+            
+            if (!currentBrand || !brands.includes(currentBrand)) {
+                currentBrand = brands[0];
+            }
+
+            brands.forEach(brand => {
+                const btn = document.createElement("button");
+                btn.className = "brand-tab " + (brand === currentBrand ? "active" : "");
+                btn.textContent = brand;
+                
+                btn.onclick = () => {
+                    currentBrand = brand;
+                    Array.from(tabsContainer.children).forEach(c => c.classList.remove("active"));
+                    btn.classList.add("active");
+                    renderCategorizedCards(currentBrand);
+                };
+                tabsContainer.appendChild(btn);
+            });
+
+            renderCategorizedCards(currentBrand);
+            console.log("【步驟 8】畫面渲染完畢，系統啟動成功 (Step 8: UI rendering complete, system started successfully)");
+        }
+
+        function renderCategorizedCards(brand) {
+            cardsContainer.innerHTML = ""; 
+            const data = globalCategorizedData[brand] || [];
+
+            data.forEach(series => {
+                const titleEl = document.createElement("div");
+                titleEl.className = "series-title";
+                titleEl.textContent = series.seriesName;
+                cardsContainer.appendChild(titleEl);
+
+                const gridEl = document.createElement("div");
+                gridEl.className = "grid-container";
+
+                series.models.forEach(model => {
+                    const cardEl = document.createElement("a");
+                    cardEl.href = model.url;
+                    cardEl.target = "_blank";
+                    cardEl.textContent = model.title;
+                    cardEl.className = "card";
+                    gridEl.appendChild(cardEl);
+                });
+                cardsContainer.appendChild(gridEl);
+            });
+        }
+    </script>
+</body>
+</html>
