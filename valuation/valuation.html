@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>二手設備報價系統 - 全動態資料版（Second-hand Device Quote System - Fully Dynamic Data Version）</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f8f9fa; 
+            padding: 20px; 
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .control-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            text-align: center;
+            border: 2px dashed #0056b3;
+        }
+        .file-input-btn {
+            font-size: 16px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .series-title { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #0056b3; 
+            margin-top: 40px; 
+            margin-bottom: 15px; 
+            padding-bottom: 8px; 
+            border-bottom: 2px solid #cce5ff; 
+        }
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+            gap: 15px; 
+        }
+        .card { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white; 
+            padding: 15px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+            text-decoration: none; 
+            color: #495057; 
+            font-size: 15px;
+            font-weight: bold;
+            border: 1px solid #dee2e6;
+            transition: all 0.2s ease-in-out; 
+            text-align: center;
+            line-height: 1.4;
+        }
+        .card:hover { 
+            background-color: #0056b3;
+            color: white;
+            transform: translateY(-4px); 
+            box-shadow: 0 6px 12px rgba(0,86,179,0.2); 
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="control-panel">
+            <h2>匯入資料庫檔案（Import Database File）</h2>
+            <p>請選擇您下載的 <b>iphone_full_links.txt</b>，系統將全自動解析與動態分類。（Please select your downloaded TXT file, the system will fully automatically parse and dynamically categorize.）</p>
+            <input type="file" id="fileInput" class="file-input-btn" accept=".txt">
+        </div>
+
+        <div id="app-container"></div>
+    </div>
+
+    <script>
+        // 監聽檔案上傳事件（Listen for file upload event）
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                processData(text);
+            };
+            reader.readAsText(file);
+        });
+
+        // 解析 TXT 文字（Parse TXT text）
+        function processData(text) {
+            const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
+            const parsedModels = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].startsWith('http') && lines[i].includes('/usedprices/')) {
+                    if (i > 0 && !lines[i-1].startsWith('http')) {
+                        let title = lines[i-1];
+                        // 清除檔案中可能附帶的 source 標記（Clear potential source markers from the file）
+                        title = title.replace(/\/g, '').trim(); 
+                        parsedModels.push({ title: title, url: lines[i] });
+                    }
+                }
+            }
+
+            const categorizedData = categorizeModels(parsedModels);
+            renderCategorizedCards(categorizedData);
+        }
+
+        // 全動態分類演算法（Fully Dynamic Categorization Algorithm）
+        function categorizeModels(models) {
+            const categories = {};
+
+            models.forEach(model => {
+                // 利用正則表達式抓取機型代號（Capture model code using regular expression）
+                const match = model.title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
+                
+                let seriesName = "其他型號 系列 (Other Series)";
+                if (match && match[1]) {
+                    seriesName = `iPhone ${match[1]} 系列 (Series)`;
+                }
+
+                if (!categories[seriesName]) {
+                    categories[seriesName] = [];
+                }
+                
+                categories[seriesName].push(model);
+            });
+
+            // 將分類排序，由新到舊（Sort categories from newest to oldest）
+            return Object.keys(categories)
+                .sort((a, b) => {
+                    const numA = parseInt(a.match(/\d+/) || 0);
+                    const numB = parseInt(b.match(/\d+/) || 0);
+                    
+                    if (numA !== numB) {
+                        return numB - numA; 
+                    }
+                    return a.localeCompare(b);
+                })
+                .map(key => ({ seriesName: key, models: categories[key] }));
+        }
+
+        // 渲染畫面（Render UI）
+        function renderCategorizedCards(data) {
+            const container = document.getElementById("app-container");
+            container.innerHTML = ""; 
+            
+            data.forEach(series => {
+                const titleEl = document.createElement("div");
+                titleEl.className = "series-title";
+                titleEl.textContent = series.seriesName;
+                container.appendChild(titleEl);
+
+                const gridEl = document.createElement("div");
+                gridEl.className = "grid-container";
+
+                series.models.forEach(model => {
+                    const cardEl = document.createElement("a");
+                    cardEl.href = model.url;
+                    cardEl.target = "_blank";
+                    cardEl.textContent = model.title;
+                    cardEl.className = "card";
+                    gridEl.appendChild(cardEl);
+                });
+
+                container.appendChild(gridEl);
+            });
+        }
+    </script>
+</body>
+</html>
