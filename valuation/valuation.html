@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>二手設備報價系統 - 全動態資料版（Second-hand Device Quote System - Fully Dynamic Data Version）</title>
+    <title>二手設備報價系統 - 全自動雲端直讀版（Second-hand Device Quote System - Auto Cloud Read Version）</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -14,19 +14,14 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        .control-panel {
+        .header-box {
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             margin-bottom: 30px;
             text-align: center;
-            border: 2px dashed #0056b3;
-        }
-        .file-input-btn {
-            font-size: 16px;
-            padding: 10px;
-            cursor: pointer;
+            border-left: 5px solid #0056b3;
         }
         .series-title { 
             font-size: 22px; 
@@ -66,48 +61,93 @@
             box-shadow: 0 6px 12px rgba(0,86,179,0.2); 
             border-color: #0056b3;
         }
+        .status-msg {
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+            padding: 40px;
+        }
+        .error-msg {
+            color: #dc3545;
+            text-align: center;
+            padding: 20px;
+            background: #f8d7da;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="control-panel">
-            <h2>匯入資料庫檔案（Import Database File）</h2>
-            <p>請選擇您下載的 <b>iphone_full_links.txt</b>，系統將全自動解析與動態分類。（Please select your downloaded TXT file, the system will fully automatically parse and dynamically categorize.）</p>
-            <input type="file" id="fileInput" class="file-input-btn" accept=".txt">
+        <div class="header-box">
+            <h1 style="margin: 0; color: #333; font-size: 24px;">二手設備即時估價系統 (Second-hand Device Real-time Valuation System)</h1>
+            <p style="margin: 10px 0 0 0; color: #666;">系統將自動讀取伺服器最新報價資料... (System is automatically reading the latest quote data from the server...)</p>
         </div>
 
-        <div id="app-container"></div>
+        <div id="app-container">
+            <div class="status-msg">資料載入中，請稍候... (Loading data, please wait...)</div>
+        </div>
     </div>
 
     <script>
-        // 監聽檔案上傳事件（Listen for file upload event）
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+        const container = document.getElementById("app-container");
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = e.target.result;
-                processData(text);
-            };
-            reader.readAsText(file);
+        // 【升級核心】網頁載入完成後，自動發送請求讀取同目錄下的 txt 檔案
+        // (Upgrade Core: After page loads, automatically fetch the txt file in the same directory)
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchData();
         });
+
+        async function fetchData() {
+            try {
+                // 自動抓取旁邊的 txt 檔案（Automatically fetch the adjacent txt file）
+                // 加上時間戳記避免 GitHub Pages 快取舊資料 (Add timestamp to prevent GitHub Pages from caching old data)
+                const response = await fetch('iphone_full_links.txt?t=' + new Date().getTime());
+                
+                if (!response.ok) {
+                    throw new Error('找不到資料庫檔案 (Database file not found)');
+                }
+                
+                const text = await response.text();
+                processData(text);
+
+            } catch (error) {
+                // 如果檔案不存在或網路錯誤，顯示警告（Show warning if file doesn't exist or network error occurs）
+                container.innerHTML = `<div class="error-msg">
+                    <h3>⚠️ 系統讀取失敗 (System Read Failed)</h3>
+                    <p>無法讀取報價資料，請確認 <b>iphone_full_links.txt</b> 檔案是否已經上傳至 GitHub 的同一個資料夾中。</p>
+                    <p style="font-size: 12px; color: #888;">錯誤細節 (Error details): ${error.message}</p>
+                </div>`;
+            }
+        }
 
         // 解析 TXT 文字（Parse TXT text）
         function processData(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
             const parsedModels = [];
+            let hasProductsOnly = false;
 
             for (let i = 0; i < lines.length; i++) {
-                if (lines[i].startsWith('http') && lines[i].includes('/usedprices/')) {
-                    if (i > 0 && !lines[i-1].startsWith('http')) {
-                        let title = lines[i-1];
-                        // 清除檔案中可能附帶的 source 標記（Clear potential source markers from the file）
-                        title = title.replace(/\/g, '').trim(); 
-                        parsedModels.push({ title: title, url: lines[i] });
+                if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
+                    if (lines[i].includes('/usedprices/')) {
+                        if (i > 0 && !lines[i-1].startsWith('http')) {
+                            let title = lines[i-1].replace(/\/g, '').trim(); 
+                            parsedModels.push({ title: title, url: lines[i] });
+                        }
+                    } else if (lines[i].includes('/products/')) {
+                        hasProductsOnly = true;
                     }
                 }
+            }
+
+            if (parsedModels.length === 0) {
+                container.innerHTML = `<div class="error-msg">
+                    <h3>⚠️ 資料庫內容無效 (Invalid Database Content)</h3>
+                    <p>檔案內缺乏有效的二手報價連結。請重新擷取正確的資料並上傳覆蓋。</p>
+                </div>`;
+                return;
             }
 
             const categorizedData = categorizeModels(parsedModels);
@@ -119,61 +159,9 @@
             const categories = {};
 
             models.forEach(model => {
-                // 利用正則表達式抓取機型代號（Capture model code using regular expression）
                 const match = model.title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
-                
                 let seriesName = "其他型號 系列 (Other Series)";
                 if (match && match[1]) {
                     seriesName = `iPhone ${match[1]} 系列 (Series)`;
                 }
-
                 if (!categories[seriesName]) {
-                    categories[seriesName] = [];
-                }
-                
-                categories[seriesName].push(model);
-            });
-
-            // 將分類排序，由新到舊（Sort categories from newest to oldest）
-            return Object.keys(categories)
-                .sort((a, b) => {
-                    const numA = parseInt(a.match(/\d+/) || 0);
-                    const numB = parseInt(b.match(/\d+/) || 0);
-                    
-                    if (numA !== numB) {
-                        return numB - numA; 
-                    }
-                    return a.localeCompare(b);
-                })
-                .map(key => ({ seriesName: key, models: categories[key] }));
-        }
-
-        // 渲染畫面（Render UI）
-        function renderCategorizedCards(data) {
-            const container = document.getElementById("app-container");
-            container.innerHTML = ""; 
-            
-            data.forEach(series => {
-                const titleEl = document.createElement("div");
-                titleEl.className = "series-title";
-                titleEl.textContent = series.seriesName;
-                container.appendChild(titleEl);
-
-                const gridEl = document.createElement("div");
-                gridEl.className = "grid-container";
-
-                series.models.forEach(model => {
-                    const cardEl = document.createElement("a");
-                    cardEl.href = model.url;
-                    cardEl.target = "_blank";
-                    cardEl.textContent = model.title;
-                    cardEl.className = "card";
-                    gridEl.appendChild(cardEl);
-                });
-
-                container.appendChild(gridEl);
-            });
-        }
-    </script>
-</body>
-</html>
