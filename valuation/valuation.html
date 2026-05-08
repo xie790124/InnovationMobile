@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>二手設備報價系統 - 零正則純字串版（Second-hand Device Quote System - Zero Regex Pure String Version）</title>
+    <title>手機王-二手快選</title>
     <link rel="icon" href="data:,">
     <style>
         body { 
@@ -103,7 +103,7 @@
 
     <div class="container">
         <div class="header-box">
-            <h1 style="margin: 0; color: #333; font-size: 24px;">二手設備即時估價系統 (Second-hand Device Real-time Valuation System)</h1>
+            <h1 style="margin: 0; color: #333; font-size: 24px;">手機王-二手選單 (Second-hand Device Real-time Valuation System)</h1>
             <p style="margin: 10px 0 0 0; color: #666;">系統將自動讀取所有品牌報價資料... (System is automatically reading quote data for all brands...)</p>
         </div>
 
@@ -204,28 +204,32 @@
                     else if (upperTitle.includes("IPHONE SE")) seriesName = "iPhone SE 系列 (Series)";
                     else if (upperTitle.includes("IPHONE 8") || upperTitle.includes("IPHONE 7")) seriesName = "iPhone 8/7 系列 (Series)";
                     else if (upperTitle.includes("AIR")) seriesName = "iPhone Air 系列 (Series)";
+                    else if (upperTitle.includes("iPad")) seriesName = "iPad 系列 (Series)";
+                    else if (upperTitle.includes("Watch")) seriesName = "Watch 系列 (Series)";
                     else seriesName = "其他 iPhone (Other iPhones)";
                 } 
                 else if (upperTitle.includes("SAMSUNG") || upperTitle.includes("GALAXY")) {
                     brand = "SAMSUNG";
-                    if (upperTitle.includes("GALAXY S")) seriesName = "Galaxy S 系列 (Series)";
-                    else if (upperTitle.includes("GALAXY A")) seriesName = "Galaxy A 系列 (Series)";
-                    else if (upperTitle.includes("GALAXY Z")) seriesName = "Galaxy Z 系列 (Series)";
+                    if (upperTitle.includes("GALAXY S")) seriesName = "Galaxy S 系列 (頂級旗艦)";
+                    else if (upperTitle.includes("GALAXY A")) seriesName = "Galaxy A 系列 (中高階)";
+                    else if (upperTitle.includes("GALAXY Z")) seriesName = "Galaxy Z 系列 (折疊螢幕)";
+                    else if (upperTitle.includes("Galaxy M")) seriesName = "Galaxy M 系列 (中階)";
                     else if (upperTitle.includes("NOTE")) seriesName = "Galaxy Note 系列 (Series)";
+                    else if (upperTitle.includes("Tab")) seriesName = "Galaxy Tab 系列 (平版)";
                     else seriesName = "其他 Samsung (Other Samsungs)";
                 } 
                 else if (upperTitle.includes("OPPO")) {
                     brand = "OPPO";
-                    if (upperTitle.includes("RENO")) seriesName = "OPPO Reno 系列 (Series)";
-                    else if (upperTitle.includes("FIND")) seriesName = "OPPO Find 系列 (Series)";
-                    else if (upperTitle.includes(" A")) seriesName = "OPPO A 系列 (Series)";
+                    if (upperTitle.includes("RENO")) seriesName = "OPPO Reno 系列 (中高階手機)";
+                    else if (upperTitle.includes("FIND")) seriesName = "OPPO Find 系列 (頂級旗艦)";
+                    else if (upperTitle.includes(" A")) seriesName = "OPPO A 系列 (入門至中階)";
                     else seriesName = "其他 OPPO (Other OPPOs)";
                 } 
                 else if (upperTitle.includes("VIVO")) {
                     brand = "vivo";
-                    if (upperTitle.includes(" X")) seriesName = "vivo X 系列 (Series)";
-                    else if (upperTitle.includes(" V")) seriesName = "vivo V 系列 (Series)";
-                    else if (upperTitle.includes(" Y")) seriesName = "vivo Y 系列 (Series)";
+                    if (upperTitle.includes(" X")) seriesName = "vivo X 系列 (頂級旗艦)";
+                    else if (upperTitle.includes(" V")) seriesName = "vivo V 系列 (中高階)";
+                    else if (upperTitle.includes(" Y")) seriesName = "vivo Y 系列 (高 CP 值)";
                     else seriesName = "其他 vivo (Other vivos)";
                 }
                 else if (upperTitle.includes("ASUS") || upperTitle.includes("ZENFONE") || upperTitle.includes("ROG")) {
@@ -233,6 +237,12 @@
                     if (upperTitle.includes("ROG")) seriesName = "ROG 系列 (Series)";
                     else if (upperTitle.includes("ZENFONE")) seriesName = "Zenfone 系列 (Series)";
                     else seriesName = "其他 ASUS (Other ASUS)";
+                }   
+                else if (upperTitle.includes("小米") || upperTitle.includes("Xiaomi") || upperTitle.includes("Redmi")) {
+                    brand = "小米";
+                    if (upperTitle.includes("Xiaomi")) seriesName = "Xiaomi 系列 (Series)";
+                    else if (upperTitle.includes("Redmi")) seriesName = "Redmi 系列 (Series)";
+                    else seriesName = "其他 小米 (Other 小米)";
                 }
                 else {
                     let parts = title.split(' ');
