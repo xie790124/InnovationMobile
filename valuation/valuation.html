@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>二手設備報價系統 - 全自動雲端直讀版（Second-hand Device Quote System - Auto Cloud Read Version）</title>
+    <title>二手設備報價系統 - 除錯追蹤版（Second-hand Device Quote System - Debug Tracking Version）</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -75,6 +75,7 @@
             border-radius: 8px;
             border: 1px solid #f5c6cb;
             margin-top: 20px;
+            word-break: break-all;
         }
     </style>
 </head>
@@ -94,37 +95,41 @@
     <script>
         const container = document.getElementById("app-container");
 
-        // 【升級核心】網頁載入完成後，自動發送請求讀取同目錄下的 txt 檔案
-        // (Upgrade Core: After page loads, automatically fetch the txt file in the same directory)
+        // 【追蹤點 1】確認網頁架構是否載入完畢 (Trace Point 1: Check if DOM is loaded)
         document.addEventListener("DOMContentLoaded", function() {
+            console.log("【步驟 1】網頁架構載入完畢，準備啟動讀取程序 (Step 1: DOM loaded, preparing to fetch)");
             fetchData();
         });
 
         async function fetchData() {
             try {
-                // 自動抓取旁邊的 txt 檔案（Automatically fetch the adjacent txt file）
-                // 加上時間戳記避免 GitHub Pages 快取舊資料 (Add timestamp to prevent GitHub Pages from caching old data)
-                const response = await fetch('iphone_full_links.txt?t=' + new Date().getTime());
+                const targetUrl = 'iphone_full_links.txt?t=' + new Date().getTime();
+                console.log(`【步驟 2】開始向伺服器請求檔案 (Step 2: Start fetching file from server): ${targetUrl}`);
+                
+                const response = await fetch(targetUrl);
+                console.log(`【步驟 3】伺服器回應狀態碼 (Step 3: Server response status): ${response.status} (OK: ${response.ok})`);
                 
                 if (!response.ok) {
-                    throw new Error('找不到資料庫檔案 (Database file not found)');
+                    throw new Error(`伺服器找不到檔案，HTTP 狀態碼為 (File not found, HTTP status is) ${response.status}`);
                 }
                 
                 const text = await response.text();
+                console.log(`【步驟 4】成功讀取文字資料，總字元數 (Step 4: Successfully read text data, total characters): ${text.length}`);
+                
                 processData(text);
 
             } catch (error) {
-                // 如果檔案不存在或網路錯誤，顯示警告（Show warning if file doesn't exist or network error occurs）
+                console.error("【重大錯誤】(CRITICAL ERROR):", error);
                 container.innerHTML = `<div class="error-msg">
                     <h3>⚠️ 系統讀取失敗 (System Read Failed)</h3>
-                    <p>無法讀取報價資料，請確認 <b>iphone_full_links.txt</b> 檔案是否已經上傳至 GitHub 的同一個資料夾中。</p>
-                    <p style="font-size: 12px; color: #888;">錯誤細節 (Error details): ${error.message}</p>
+                    <p>請確認 <b>iphone_full_links.txt</b> 是否存在於 GitHub 伺服器上。</p>
+                    <p style="font-size: 14px; color: #888;">錯誤細節 (Error details): ${error.message}</p>
                 </div>`;
             }
         }
 
-        // 解析 TXT 文字（Parse TXT text）
         function processData(text) {
+            console.log("【步驟 5】開始解析文字內容 (Step 5: Start parsing text content)");
             const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
             const parsedModels = [];
             let hasProductsOnly = false;
@@ -142,22 +147,26 @@
                 }
             }
 
+            console.log(`【步驟 6】解析完成，共找到 (Step 6: Parsing complete, found) ${parsedModels.length} 筆有效二手報價資料`);
+
             if (parsedModels.length === 0) {
+                console.warn("【警告】解析結果為 0 筆資料 (Warning: Parsed result is 0 records)");
                 container.innerHTML = `<div class="error-msg">
                     <h3>⚠️ 資料庫內容無效 (Invalid Database Content)</h3>
                     <p>檔案內缺乏有效的二手報價連結。請重新擷取正確的資料並上傳覆蓋。</p>
+                    <p>偵測到一般產品連結 (Detected general product links): ${hasProductsOnly}</p>
                 </div>`;
                 return;
             }
 
             const categorizedData = categorizeModels(parsedModels);
+            console.log("【步驟 7】動態分類完成，準備渲染畫面 (Step 7: Categorization complete, preparing to render UI)", categorizedData);
+            
             renderCategorizedCards(categorizedData);
         }
 
-        // 全動態分類演算法（Fully Dynamic Categorization Algorithm）
         function categorizeModels(models) {
             const categories = {};
-
             models.forEach(model => {
                 const match = model.title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
                 let seriesName = "其他型號 系列 (Other Series)";
@@ -165,3 +174,46 @@
                     seriesName = `iPhone ${match[1]} 系列 (Series)`;
                 }
                 if (!categories[seriesName]) {
+                    categories[seriesName] = [];
+                }
+                categories[seriesName].push(model);
+            });
+
+            return Object.keys(categories)
+                .sort((a, b) => {
+                    const matchA = a.match(/\d+/);
+                    const matchB = b.match(/\d+/);
+                    const numA = matchA ? parseInt(matchA[0], 10) : 0;
+                    const numB = matchB ? parseInt(matchB[0], 10) : 0;
+                    if (numA !== numB) { return numB - numA; }
+                    return a.localeCompare(b);
+                })
+                .map(key => ({ seriesName: key, models: categories[key] }));
+        }
+
+        function renderCategorizedCards(data) {
+            container.innerHTML = ""; 
+            data.forEach(series => {
+                const titleEl = document.createElement("div");
+                titleEl.className = "series-title";
+                titleEl.textContent = series.seriesName;
+                container.appendChild(titleEl);
+
+                const gridEl = document.createElement("div");
+                gridEl.className = "grid-container";
+
+                series.models.forEach(model => {
+                    const cardEl = document.createElement("a");
+                    cardEl.href = model.url;
+                    cardEl.target = "_blank";
+                    cardEl.textContent = model.title;
+                    cardEl.className = "card";
+                    gridEl.appendChild(cardEl);
+                });
+                container.appendChild(gridEl);
+            });
+            console.log("【步驟 8】畫面渲染完畢，系統啟動成功 (Step 8: UI rendering complete, system started successfully)");
+        }
+    </script>
+</body>
+</html>
