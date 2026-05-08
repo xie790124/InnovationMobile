@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>手機王二手快選 -</title>
+    <title>手機王二手設備快選 </title>
     <link rel="icon" href="data:,">
     <style>
         body { 
@@ -20,15 +20,44 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
             border-left: 5px solid #0056b3;
         }
+        /* 新增：品牌頁籤樣式 (New: Brand Tabs Style) */
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        .brand-tab {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #495057;
+            background-color: #e9ecef;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .brand-tab:hover {
+            background-color: #dee2e6;
+        }
+        .brand-tab.active {
+            color: white;
+            background-color: #0056b3;
+            border-color: #004494;
+            box-shadow: 0 4px 8px rgba(0,86,179,0.3);
+        }
+        /* 卡片與網格區域 (Cards and Grid Area) */
         .series-title { 
             font-size: 22px; 
             font-weight: bold; 
             color: #0056b3; 
-            margin-top: 40px; 
+            margin-top: 30px; 
             margin-bottom: 15px; 
             padding-bottom: 8px; 
             border-bottom: 2px solid #cce5ff; 
@@ -62,164 +91,138 @@
             box-shadow: 0 6px 12px rgba(0,86,179,0.2); 
             border-color: #0056b3;
         }
-        .status-msg {
+        .status-msg, .error-msg {
             font-size: 18px;
-            color: #666;
-            text-align: center;
-            padding: 40px;
-        }
-        .error-msg {
-            color: #dc3545;
             text-align: center;
             padding: 20px;
-            background: #f8d7da;
             border-radius: 8px;
-            border: 1px solid #f5c6cb;
-            margin-top: 20px;
-            word-break: break-all;
         }
+        .status-msg { color: #666; padding: 40px; }
+        .error-msg { color: #dc3545; background: #f8d7da; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="header-box">
-            <h1 style="margin: 0; color: #333; font-size: 24px;">手機王二手設備即時估價系統</h1>
-            <p style="margin: 10px 0 0 0; color: #666;">系統將自動讀取伺服器最新報價資料...</p>
+            <h1 style="margin: 0; color: #333; font-size: 24px;">二手設備即時估價系統 (Second-hand Device Real-time Valuation System)</h1>
+            <p style="margin: 10px 0 0 0; color: #666;">系統將自動讀取所有品牌報價資料... (System is automatically reading quote data for all brands...)</p>
         </div>
 
-        <div id="app-container">
+        <div id="brand-tabs" class="tabs-container"></div>
+
+        <div id="cards-container">
             <div class="status-msg">資料載入中，請稍候... (Loading data, please wait...)</div>
         </div>
     </div>
 
     <script>
-        const container = document.getElementById("app-container");
+        const tabsContainer = document.getElementById("brand-tabs");
+        const cardsContainer = document.getElementById("cards-container");
+        
+        let globalCategorizedData = {}; // 儲存所有品牌的資料 (Store all brand data)
+        let currentBrand = ''; // 紀錄目前選擇的品牌 (Record currently selected brand)
 
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("【步驟 1】網頁架構載入完畢，準備啟動讀取程序 (Step 1: DOM loaded, preparing to fetch)");
-            fetchData();
-        });
+        document.addEventListener("DOMContentLoaded", fetchData);
 
         async function fetchData() {
             try {
-                const targetUrl = 'iphone_full_links.txt?t=' + new Date().getTime();
-                console.log("【步驟 2】開始向伺服器請求檔案 (Step 2: Start fetching file): " + targetUrl);
-                
+                // 改為讀取綜合檔案 (Changed to read the consolidated file)
+                const targetUrl = 'all_brands_links.txt?t=' + new Date().getTime();
                 const response = await fetch(targetUrl);
-                console.log("【步驟 3】伺服器回應狀態碼 (Step 3: Server status): " + response.status);
                 
-                if (!response.ok) {
-                    throw new Error("HTTP Status: " + response.status);
-                }
+                if (!response.ok) throw new Error("HTTP Status: " + response.status);
                 
                 const text = await response.text();
-                console.log("【步驟 4】成功讀取文字資料，總字元數 (Step 4: Characters read): " + text.length);
-                
                 processData(text);
-
             } catch (error) {
-                console.error("【重大錯誤】(CRITICAL ERROR):", error);
-                container.innerHTML = `<div class="error-msg">
+                console.error("【錯誤】(ERROR):", error);
+                cardsContainer.innerHTML = `<div class="error-msg">
                     <h3>⚠️ 系統讀取失敗 (System Read Failed)</h3>
-                    <p>請確認 <b>iphone_full_links.txt</b> 是否存在於 GitHub 伺服器上。</p>
-                    <p style="font-size: 14px; color: #888;">錯誤細節: ${error.message}</p>
+                    <p>請確認 <b>all_brands_links.txt</b> 是否已上傳至伺服器。(Please ensure all_brands_links.txt is uploaded.)</p>
+                    <p style="font-size: 14px;">錯誤細節: ${error.message}</p>
                 </div>`;
             }
         }
 
         function processData(text) {
-            console.log("【步驟 5】開始解析文字內容 (Step 5: Start parsing text content)");
             const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
             const parsedModels = [];
-            let hasProductsOnly = false;
 
             for (let i = 0; i < lines.length; i++) {
                 if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
                     if (lines[i].includes('/usedprices/')) {
                         if (i > 0 && !lines[i-1].startsWith('http')) {
-                            // 究極防禦：改用字串分割，完全避開正規表達式的斜線換行問題
-                            // (Ultimate Defense: Use string split to completely avoid regex slash newline issues)
+                            // 保留防斷行寫法 (Keep wrap-proof mechanism)
                             let rawTitle = lines[i-1];
                             let title = rawTitle.split('] ').pop().trim(); 
                             parsedModels.push({ title: title, url: lines[i] });
                         }
-                    } else if (lines[i].includes('/products/')) {
-                        hasProductsOnly = true;
                     }
                 }
             }
 
-            console.log("【步驟 6】解析完成，找到有效資料數 (Step 6: Parsing complete, valid records): " + parsedModels.length);
-
             if (parsedModels.length === 0) {
-                container.innerHTML = `<div class="error-msg">
-                    <h3>⚠️ 資料庫內容無效 (Invalid Database Content)</h3>
-                    <p>檔案內缺乏有效的二手報價連結。請重新擷取正確的資料並上傳覆蓋。</p>
-                </div>`;
+                cardsContainer.innerHTML = `<div class="error-msg"><h3>⚠️ 資料庫內容無效 (Invalid Database Content)</h3></div>`;
                 return;
             }
 
-            const categorizedData = categorizeModels(parsedModels);
-            console.log("【步驟 7】動態分類完成，準備渲染畫面 (Step 7: Categorization complete)");
-            
-            renderCategorizedCards(categorizedData);
+            // 執行多品牌智慧分類 (Execute multi-brand smart categorization)
+            globalCategorizedData = categorizeBrandsAndModels(parsedModels);
+            renderBrandTabs();
         }
 
-        function categorizeModels(models) {
-            const categories = {};
-            
-            // 縮短正則表達式，防範自動換行 (Shorten regex to prevent auto-wrap)
-            const shortRegex = /iPhone\s+(\d+|SE|X[A-Z]*|Air)/i;
+        // 核心升級：雙層分類演算法 (Core Upgrade: Two-tier categorization algorithm)
+        function categorizeBrandsAndModels(models) {
+            const brandsData = {};
 
             models.forEach(model => {
-                const match = model.title.match(shortRegex);
-                let seriesName = "其他型號 系列 (Other Series)";
-                if (match && match[1]) {
-                    seriesName = "iPhone " + match[1] + " 系列 (Series)";
+                let title = model.title;
+                let brand = "其他品牌 (Others)";
+                let seriesName = "其他型號 (Other Models)";
+
+                // 智慧識別各大廠牌 (Smart identification of major brands)
+                if (title.match(/Apple|iPhone/i)) {
+                    brand = "Apple";
+                    const match = title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
+                    seriesName = match ? "iPhone " + match[1] + " 系列 (Series)" : "其他 iPhone (Other iPhones)";
+                } 
+                else if (title.match(/SAMSUNG|Galaxy/i)) {
+                    brand = "SAMSUNG";
+                    const match = title.match(/Galaxy\s+([A-Za-z]+)/i); // 抓取 S, A, Z, Note 等 (Capture S, A, Z, Note, etc.)
+                    seriesName = match ? "Galaxy " + match[1] + " 系列 (Series)" : "其他 Samsung (Other Samsungs)";
+                } 
+                else if (title.match(/OPPO/i)) {
+                    brand = "OPPO";
+                    const match = title.match(/OPPO\s+([A-Za-z]+)/i); // 抓取 Reno, Find 等 (Capture Reno, Find, etc.)
+                    seriesName = match ? "OPPO " + match[1] + " 系列 (Series)" : "其他 OPPO (Other OPPOs)";
+                } 
+                else if (title.match(/vivo/i)) {
+                    brand = "vivo";
+                    const match = title.match(/vivo\s+([A-Za-z]+)/i); // 抓取 X, V, Y 等 (Capture X, V, Y, etc.)
+                    seriesName = match ? "vivo " + match[1] + " 系列 (Series)" : "其他 vivo (Other vivos)";
                 }
-                if (!categories[seriesName]) {
-                    categories[seriesName] = [];
+                else if (title.match(/ASUS|Zenfone|ROG/i)) {
+                    brand = "ASUS";
+                    const match = title.match(/Zenfone|ROG/i);
+                    seriesName = match ? match[0] + " 系列 (Series)" : "其他 ASUS (Other ASUS)";
                 }
-                categories[seriesName].push(model);
+                else {
+                    // 自動抓取第一單字為品牌 (Automatically extract the first word as brand)
+                    brand = title.split(' ')[0] || "其他 (Others)";
+                    seriesName = "所有機型 (All Models)";
+                }
+
+                if (!brandsData[brand]) brandsData[brand] = {};
+                if (!brandsData[brand][seriesName]) brandsData[brand][seriesName] = [];
+                brandsData[brand][seriesName].push(model);
             });
 
-            return Object.keys(categories)
-                .sort((a, b) => {
-                    const numRegex = /\d+/;
-                    const matchA = a.match(numRegex);
-                    const matchB = b.match(numRegex);
-                    const numA = matchA ? parseInt(matchA[0], 10) : 0;
-                    const numB = matchB ? parseInt(matchB[0], 10) : 0;
-                    if (numA !== numB) { return numB - numA; }
-                    return a.localeCompare(b);
-                })
-                .map(key => ({ seriesName: key, models: categories[key] }));
-        }
-
-        function renderCategorizedCards(data) {
-            container.innerHTML = ""; 
-            data.forEach(series => {
-                const titleEl = document.createElement("div");
-                titleEl.className = "series-title";
-                titleEl.textContent = series.seriesName;
-                container.appendChild(titleEl);
-
-                const gridEl = document.createElement("div");
-                gridEl.className = "grid-container";
-
-                series.models.forEach(model => {
-                    const cardEl = document.createElement("a");
-                    cardEl.href = model.url;
-                    cardEl.target = "_blank";
-                    cardEl.textContent = model.title;
-                    cardEl.className = "card";
-                    gridEl.appendChild(cardEl);
-                });
-                container.appendChild(gridEl);
-            });
-            console.log("【步驟 8】畫面渲染完畢，系統啟動成功 (Step 8: UI rendering complete, system started successfully)");
-        }
-    </script>
-</body>
-</html>
+            // 將各品牌內部的系列進行排序 (Sort the series within each brand)
+            Object.keys(brandsData).forEach(b => {
+                const seriesObj = brandsData[b];
+                const sortedArray = Object.keys(seriesObj)
+                    .sort((a, b) => {
+                        const numRegex = /\d+/;
+                        const matchA = a.match(numRegex);
+                        const matchB = b.match(numRegex);
