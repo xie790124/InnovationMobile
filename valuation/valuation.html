@@ -93,7 +93,7 @@
     </div>
 
     <script>
-        const container = document.getElementById("app-container");
+      const container = document.getElementById("app-container");
 
         // 【追蹤點 1】確認網頁架構是否載入完畢 (Trace Point 1: Check if DOM is loaded)
         document.addEventListener("DOMContentLoaded", function() {
@@ -138,6 +138,7 @@
                 if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
                     if (lines[i].includes('/usedprices/')) {
                         if (i > 0 && !lines[i-1].startsWith('http')) {
+                            // 這裡的正規表達式有完整的結尾 /g
                             let title = lines[i-1].replace(/\/g, '').trim(); 
                             parsedModels.push({ title: title, url: lines[i] });
                         }
@@ -168,6 +169,7 @@
         function categorizeModels(models) {
             const categories = {};
             models.forEach(model => {
+                // 這裡的正規表達式有完整的結尾 /i
                 const match = model.title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
                 let seriesName = "其他型號 系列 (Other Series)";
                 if (match && match[1]) {
@@ -181,6 +183,7 @@
 
             return Object.keys(categories)
                 .sort((a, b) => {
+                    // 這裡的正規表達式有完整的結尾 /
                     const matchA = a.match(/\d+/);
                     const matchB = b.match(/\d+/);
                     const numA = matchA ? parseInt(matchA[0], 10) : 0;
