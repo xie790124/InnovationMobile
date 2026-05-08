@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>二手設備報價系統 - 最終追蹤版（Second-hand Device Quote System - Final Tracking Version）</title>
+    <title>二手設備報價系統 - 防斷行最終版（Second-hand Device Quote System - Wrap-Proof Final Version）</title>
     <link rel="icon" href="data:,">
     <style>
         body { 
@@ -96,7 +96,6 @@
     <script>
         const container = document.getElementById("app-container");
 
-        // 【追蹤點 1】
         document.addEventListener("DOMContentLoaded", function() {
             console.log("【步驟 1】網頁架構載入完畢，準備啟動讀取程序 (Step 1: DOM loaded, preparing to fetch)");
             fetchData();
@@ -105,17 +104,17 @@
         async function fetchData() {
             try {
                 const targetUrl = 'iphone_full_links.txt?t=' + new Date().getTime();
-                console.log(`【步驟 2】開始向伺服器請求檔案 (Step 2: Start fetching file from server): ${targetUrl}`);
+                console.log("【步驟 2】開始向伺服器請求檔案 (Step 2: Start fetching file): " + targetUrl);
                 
                 const response = await fetch(targetUrl);
-                console.log(`【步驟 3】伺服器回應狀態碼 (Step 3: Server response status): ${response.status} (OK: ${response.ok})`);
+                console.log("【步驟 3】伺服器回應狀態碼 (Step 3: Server status): " + response.status);
                 
                 if (!response.ok) {
-                    throw new Error(`伺服器找不到檔案，HTTP 狀態碼為 (File not found, HTTP status is) ${response.status}`);
+                    throw new Error("HTTP Status: " + response.status);
                 }
                 
                 const text = await response.text();
-                console.log(`【步驟 4】成功讀取文字資料，總字元數 (Step 4: Successfully read text data, total characters): ${text.length}`);
+                console.log("【步驟 4】成功讀取文字資料，總字元數 (Step 4: Characters read): " + text.length);
                 
                 processData(text);
 
@@ -124,7 +123,7 @@
                 container.innerHTML = `<div class="error-msg">
                     <h3>⚠️ 系統讀取失敗 (System Read Failed)</h3>
                     <p>請確認 <b>iphone_full_links.txt</b> 是否存在於 GitHub 伺服器上。</p>
-                    <p style="font-size: 14px; color: #888;">錯誤細節 (Error details): ${error.message}</p>
+                    <p style="font-size: 14px; color: #888;">錯誤細節: ${error.message}</p>
                 </div>`;
             }
         }
@@ -139,8 +138,10 @@
                 if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
                     if (lines[i].includes('/usedprices/')) {
                         if (i > 0 && !lines[i-1].startsWith('http')) {
-                            // 修正後的正規表達式 (Corrected regex)
-                            let title = lines[i-1].replace(/\/g, '').trim(); 
+                            // 究極防禦：改用字串分割，完全避開正規表達式的斜線換行問題
+                            // (Ultimate Defense: Use string split to completely avoid regex slash newline issues)
+                            let rawTitle = lines[i-1];
+                            let title = rawTitle.split('] ').pop().trim(); 
                             parsedModels.push({ title: title, url: lines[i] });
                         }
                     } else if (lines[i].includes('/products/')) {
@@ -149,32 +150,33 @@
                 }
             }
 
-            console.log(`【步驟 6】解析完成，共找到 (Step 6: Parsing complete, found) ${parsedModels.length} 筆有效二手報價資料`);
+            console.log("【步驟 6】解析完成，找到有效資料數 (Step 6: Parsing complete, valid records): " + parsedModels.length);
 
             if (parsedModels.length === 0) {
-                console.warn("【警告】解析結果為 0 筆資料 (Warning: Parsed result is 0 records)");
                 container.innerHTML = `<div class="error-msg">
                     <h3>⚠️ 資料庫內容無效 (Invalid Database Content)</h3>
                     <p>檔案內缺乏有效的二手報價連結。請重新擷取正確的資料並上傳覆蓋。</p>
-                    <p>偵測到一般產品連結 (Detected general product links): ${hasProductsOnly}</p>
                 </div>`;
                 return;
             }
 
             const categorizedData = categorizeModels(parsedModels);
-            console.log("【步驟 7】動態分類完成，準備渲染畫面 (Step 7: Categorization complete, preparing to render UI)", categorizedData);
+            console.log("【步驟 7】動態分類完成，準備渲染畫面 (Step 7: Categorization complete)");
             
             renderCategorizedCards(categorizedData);
         }
 
         function categorizeModels(models) {
             const categories = {};
+            
+            // 縮短正則表達式，防範自動換行 (Shorten regex to prevent auto-wrap)
+            const shortRegex = /iPhone\s+(\d+|SE|X[A-Z]*|Air)/i;
+
             models.forEach(model => {
-                // 修正後的正規表達式 (Corrected regex)
-                const match = model.title.match(/iPhone\s+(\d+|SE|X[A-Z]*|Air)/i);
+                const match = model.title.match(shortRegex);
                 let seriesName = "其他型號 系列 (Other Series)";
                 if (match && match[1]) {
-                    seriesName = `iPhone ${match[1]} 系列 (Series)`;
+                    seriesName = "iPhone " + match[1] + " 系列 (Series)";
                 }
                 if (!categories[seriesName]) {
                     categories[seriesName] = [];
@@ -184,9 +186,9 @@
 
             return Object.keys(categories)
                 .sort((a, b) => {
-                    // 修正後的正規表達式 (Corrected regex)
-                    const matchA = a.match(/\d+/);
-                    const matchB = b.match(/\d+/);
+                    const numRegex = /\d+/;
+                    const matchA = a.match(numRegex);
+                    const matchB = b.match(numRegex);
                     const numA = matchA ? parseInt(matchA[0], 10) : 0;
                     const numB = matchB ? parseInt(matchB[0], 10) : 0;
                     if (numA !== numB) { return numB - numA; }
