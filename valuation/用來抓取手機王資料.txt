@@ -1,0 +1,71 @@
+解除鎖定（Unlock Pasting）：直接在主控台（Console）最下方閃爍的輸入游標處，
+使用鍵盤手動輸入 allow pasting
+
+
+// 清除畫面 (Clear screen)
+console.clear();
+
+let resultString = "【擷取結果（Extraction Results）】\n\n";
+let links = document.querySelectorAll('a');
+let uniqueUrls = new Set();
+let startGrabbing = false;
+
+// 【核心升級 1：尋找實體防線】 (Core Upgrade 1: Find the physical defense line)
+// 掃描全網頁，找出「已下市」這個標題的精確 DOM 節點
+let stopNode = document.querySelector('[event-element-target="已下市"]');
+if (!stopNode) {
+    let allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, button, a, span, div');
+    for (let el of allElements) {
+        // 只過濾最表層的文字，精準抓出標題 (Filter only top-level text to precisely pinpoint the header)
+        let txt = Array.from(el.childNodes)
+            .filter(n => n.nodeType === Node.TEXT_NODE)
+            .map(n => n.textContent.trim())
+            .join('');
+        if (txt === "已下市" || txt === "已下市產品") {
+            stopNode = el;
+            break;
+        }
+    }
+}
+
+if (stopNode) {
+    console.log("✅ 成功鎖定「已下市」實體防線！防線以下的產品將被全數阻擋。(Successfully locked the 'Discontinued' physical defense line! Products below this line will be fully blocked.)");
+} else {
+    console.log("⚠️ 未偵測到「已下市」區塊。(No 'Discontinued' section detected.)");
+}
+
+links.forEach(link => {
+    // 【核心升級 2：絕對位置攔截】 (Core Upgrade 2: Absolute position interception)
+    // 如果這個連結在 HTML 結構中位於防線節點的「後面」或「裡面」，直接拒絕處理！
+    if (stopNode && (stopNode.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+        return; 
+    }
+
+    let url = link.href || "";
+    let text = link.innerText ? link.innerText.trim() : "";
+
+    // 觸發開始擷取的開關 (Trigger the start extraction switch)
+    if (link.getAttribute('event-page-function') === '二手產品') {
+        startGrabbing = true;
+    }
+    
+    // 黑名單過濾機制 (Blacklist filter mechanism)
+    let isInvalid = text === "快速檢視" || text === "比較" || text === "" || url.includes("qview");
+    
+    // 寫入有效資料 (Write valid data)
+    if (startGrabbing && !isInvalid && url.includes("sogi.com.tw") && (url.includes("/usedprices/") || url.includes("/products/")) && !uniqueUrls.has(url)) {
+        uniqueUrls.add(url);
+        resultString += `${text}\n${url}\n\n`;
+    }
+});
+
+// 將數據轉換為檔案並自動觸發下載 (Convert data to file and trigger auto-download)
+let blob = new Blob([resultString], { type: 'text/plain' });
+let a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'iphone_full_links.txt';
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
+console.log("🎉 擷取完成！已徹底封鎖並捨棄所有已下市產品。(Extraction complete! All discontinued products have been thoroughly blocked and discarded.)");
