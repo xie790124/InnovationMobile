@@ -1,4 +1,7 @@
-【擷取結果（Extraction Results）】
+# 這是 2026/05/09 更新的報價單
+# 來源：手機王各品牌二手頁面
+
+# 以下為 Sony 區塊
 
 Sony Xperia 10 VII
 https://www.sogi.com.tw/usedprices/sony-xperia-10-vii-128gb/1208
@@ -23,6 +26,8 @@ https://www.sogi.com.tw/usedprices/sony_xperia_1_iii-256gb/392
 
 Sony Xperia 1 II (8GB/256GB)
 https://www.sogi.com.tw/usedprices/sony_xperia_1_ii-256gb/1045
+
+# 以下為 Google 區塊
 
 Google Pixel 10a
 https://www.sogi.com.tw/usedprices/google-pixel-10a-128gb/1337
@@ -59,6 +64,8 @@ https://www.sogi.com.tw/usedprices/google_pixel_7-128gb/576
 
 Google Pixel 6a
 https://www.sogi.com.tw/usedprices/google_pixel_6a-128gb/521
+
+# 以下為 小米 區塊
 
 小米 Xiaomi 17 Ultra
 https://www.sogi.com.tw/usedprices/xiaomi-xiaomi-17-ultra-512gb/1347
@@ -132,6 +139,8 @@ https://www.sogi.com.tw/usedprices/xiaomi_redmi_pad_se_8_7-64gb/835
 小米 Xiaomi Pad 5 128GB
 https://www.sogi.com.tw/usedprices/xiaomi_xiaomi_pad_5-128gb/428
 
+# 以下為 ASUS 區塊
+
 ASUS Zenfone 12 Ultra
 https://www.sogi.com.tw/usedprices/asus-zenfone-12-ultra-256gb/914
 
@@ -177,6 +186,8 @@ https://www.sogi.com.tw/usedprices/asus_rog_phone_5s-512gb/415
 ASUS Zenfone 8 Flip ZS672KS 256GB
 https://www.sogi.com.tw/usedprices/asus_zenfone_8_flip_zs672ks-256gb/371
 
+# 以下為 realme 區塊
+
 realme 14 Pro 5G
 https://www.sogi.com.tw/usedprices/realme-14-pro-5g-256gb/933
 
@@ -212,6 +223,8 @@ https://www.sogi.com.tw/usedprices/realme_gt_neo2-128gb/441
 
 realme 8 5G (4GB/128GB)
 https://www.sogi.com.tw/usedprices/realme_8_5g-128gb/378
+
+# 以下為 OPPO 區塊
 
 OPPO A6s 5G
 https://www.sogi.com.tw/usedprices/oppo-a6s-5g-128gb/1311
@@ -333,6 +346,8 @@ https://www.sogi.com.tw/usedprices/oppo_a74_5g-128gb/357
 OPPO A73 5G
 https://www.sogi.com.tw/usedprices/oppo_a73_5g-128gb/1097
 
+# 以下為 VIVO 區塊
+
 vivo V70 FE
 https://www.sogi.com.tw/usedprices/vivo-v70-fe-256gb/1373
 
@@ -443,6 +458,8 @@ https://www.sogi.com.tw/usedprices/vivo_y21s-128gb/434
 
 vivo V21 5G
 https://www.sogi.com.tw/usedprices/vivo_v21_5g-128gb/363
+
+# 以下為 SAMSUNG 區塊
 
 SAMSUNG Galaxy A57 5G
 https://www.sogi.com.tw/usedprices/samsung-galaxy-a57-5g-256gb/1389
@@ -714,6 +731,7 @@ https://www.sogi.com.tw/usedprices/samsung_galaxy_buds3_pro-basic/991
 SAMSUNG Galaxy Watch6 Classic 47mm
 https://www.sogi.com.tw/usedprices/samsung_galaxy_watch6_classic-bluetooth-47mm/670
 
+# 以下為 apple 區塊
 Apple iPhone 17e
 https://www.sogi.com.tw/usedprices/apple-iphone-17e-256gb/1345
 
