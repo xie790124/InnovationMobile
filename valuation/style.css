@@ -1,4 +1,4 @@
- <style>
+
         body { 
             font-family: Arial, sans-serif; 
             background-color: #f8f9fa; 
@@ -91,4 +91,3 @@
         }
         .status-msg { color: #666; padding: 40px; }
         .error-msg { color: #dc3545; background: #f8d7da; border: 1px solid #f5c6cb; }
-    </style>
