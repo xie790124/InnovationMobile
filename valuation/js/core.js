@@ -41,7 +41,7 @@ function switchSource(source) {
     };
 
     script.onerror = () => {
-        cardsContainer.innerHTML = `<div class="error-msg">找不到 js/${source}_config.js 檔案！請檢查資料夾。</div>`;
+cardsContainer.innerHTML = `<div class="error-msg">找不到 js/${source}_config.js 檔案！請檢查資料夾。</div>`;
     };
 
     document.body.appendChild(script);
