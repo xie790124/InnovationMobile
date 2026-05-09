@@ -181,7 +181,7 @@
             renderBrandTabs();
         }
 
-       function categorizeBrandsAndModels(models) {
+     function categorizeBrandsAndModels(models) {
             const brandsData = {};
 
             models.forEach(model => {
@@ -191,7 +191,6 @@
                 let brand = "其他品牌 (Others)";
                 let seriesName = "其他型號 (Other Models)";
 
-                // 【已修復】所有的 includes 關鍵字皆必須為全大寫 (All includes keywords must be fully uppercase)
                 if (upperTitle.includes("APPLE") || upperTitle.includes("IPHONE")) {
                     brand = "Apple";
                     if (upperTitle.includes("IPHONE 17")) seriesName = "iPhone 17 系列 (Series)";
@@ -212,10 +211,17 @@
                 else if (upperTitle.includes("SAMSUNG") || upperTitle.includes("GALAXY")) {
                     brand = "SAMSUNG";
                     if (upperTitle.includes("GALAXY S")) seriesName = "Galaxy S 系列 (頂級旗艦)";
-                    else if (upperTitle.includes("GALAXY A")) seriesName = "Galaxy A 系列 (中高階)";
                     else if (upperTitle.includes("GALAXY Z")) seriesName = "Galaxy Z 系列 (折疊螢幕)";
-                    else if (upperTitle.includes("GALAXY M")) seriesName = "Galaxy M 系列 (中階)";
                     else if (upperTitle.includes("NOTE")) seriesName = "Galaxy Note 系列 (Series)";
+                    else if (upperTitle.includes("GALAXY A")) {
+                        if (upperTitle.includes("A9") || upperTitle.includes("A8") || upperTitle.includes("A7")) seriesName = "Galaxy A7/A8 系列 (高階)";
+                        else if (upperTitle.includes("A5")) seriesName = "Galaxy A5 系列 (中高階)";
+                        else if (upperTitle.includes("A3")) seriesName = "Galaxy A3 系列 (中階)";
+                        else if (upperTitle.includes("A2")) seriesName = "Galaxy A2 系列 (入門)";
+                        else if (upperTitle.includes("A1") || upperTitle.includes("A0")) seriesName = "Galaxy A1/A0 系列 (入門)";
+                        else seriesName = "Galaxy A 系列 (其他)";
+                    }
+                    else if (upperTitle.includes("GALAXY M")) seriesName = "Galaxy M 系列 (中階)";
                     else if (upperTitle.includes("TAB")) seriesName = "Galaxy Tab 系列 (平版)";
                     else seriesName = "其他 Samsung (Other Samsungs)";
                 } 
@@ -256,92 +262,69 @@
                 brandsData[brand][seriesName].push(model);
             });
 
-            // 【保留進階功能】雙重排序系統：對卡片容量與系列區塊進行智慧排序
-            // (Preserved Advanced Feature: Dual sorting system for card capacity and series blocks)
+            // 【終極排序核心】 (Ultimate Sorting Core)
             Object.keys(brandsData).forEach(b => {
                 const seriesObj = brandsData[b];
 
-                // 1. 內部卡片排序：優先排 Pro Max、Ultra、大容量 (Internal card sorting)
-                const modelKeywords = ["ULTRA", "PRO MAX", "PRO", "PLUS", "AIR", "MINI", "FE"];
-                
                 Object.keys(seriesObj).forEach(seriesName => {
                     seriesObj[seriesName].sort((modelA, modelB) => {
                         let tA = modelA.title.toUpperCase();
                         let tB = modelB.title.toUpperCase();
 
+                        // 1. 代數排序 (S26 > S25 > S24)
+                        let genA = extractNumberFromString(tA);
+                        let genB = extractNumberFromString(tB);
+                        if (genA !== genB) return genB - genA;
+
+                        // 2. 效能等級排序 (Ultra > Pro Max > Pro...)
+                        const modelKeywords = ["ULTRA", "PRO MAX", "PRO", "PLUS", "AIR", "MINI", "FE"];
                         let getWeight = (t) => {
                             for (let i = 0; i < modelKeywords.length; i++) {
                                 if (t.includes(modelKeywords[i])) return i;
                             }
                             return 99; 
                         };
-
                         let wA = getWeight(tA);
                         let wB = getWeight(tB);
-
                         if (wA !== wB) return wA - wB;
 
+                        // 3. 容量大小排序 (1TB > 512GB > 256GB)
                         let getCapacity = (t) => {
                             if (t.includes("1TB")) return 1000;
                             if (t.includes("512GB")) return 512;
                             if (t.includes("256GB")) return 256;
                             if (t.includes("128GB")) return 128;
                             if (t.includes("64GB")) return 64;
-                            return extractNumberFromString(t);
+                            return 0;
                         };
-                        
                         return getCapacity(tB) - getCapacity(tA); 
                     });
                 });
 
-               // 2. 終極升級：系列名稱依效能階級排序 (Ultimate Upgrade: Sort series names by performance tier)
-                // 建立全品牌的效能階梯表，越前面的權重越高 (排越上面)
-                // (Create an all-brand performance tier table, earlier items have higher weight and rank higher)
+                // 4. 系列區塊本身的效能階級排序
                 const seriesTierList = [
-                    // Apple
-                   "iPhone 17", "iPhone 16", "iPhone 15", "iPhone 14", "iPhone 13", "iPhone 12", "iPhone 11", "iPhone X", "iPhone SE",  "iPad 系列", "iPhone 8", "iPhone Air",
-                    // SAMSUNG (Z折疊 / S旗艦 / Note / Tab平板 / A中高 / M入門)
-                    "Galaxy S", "Galaxy A5", "Galaxy A3", "Galaxy A1", "Galaxy Z", "Galaxy M", "Galaxy Tab", "Galaxy A", "Galaxy Note",
-                    // OPPO (Find旗艦 / Reno中高 / A入門)
+                    "iPhone 17", "iPhone 16", "iPhone 15", "iPhone 14", "iPhone 13", "iPhone 12", "iPhone 11", "iPhone X", "iPad 系列", "iPhone SE", "iPhone 8", "iPhone Air",
+                     "Galaxy S",   
+                     "Galaxy A5", "Galaxy A3", "Galaxy A2/A1/A0", "Galaxy A","Galaxy Tab","Galaxy Z","Galaxy M","Galaxy Note",
                     "OPPO Find", "OPPO Reno", "OPPO A",
-                    // vivo (X旗艦 / V中高 / Y高CP)
                     "vivo X", "vivo V", "vivo Y",
-                    // ASUS (ROG電競 / Zenfone旗艦)
                     "ROG 系列", "Zenfone 系列",
-                    // 小米 (Xiaomi旗艦 / Redmi紅米)
                     "Xiaomi 系列", "Redmi 系列",
-                    // 穿戴裝置放最後
                     "Watch 系列"
                 ];
 
                 const sortedArray = Object.keys(seriesObj)
                     .sort((a, b) => {
-                        // 尋找系列在階梯表中的位置 (Find the series position in the tier list)
-                        let getTierWeight = (seriesName) => {
+                        let getTierWeight = (s) => {
                             for (let i = 0; i < seriesTierList.length; i++) {
-                                // 只要系列名稱包含關鍵字就算命中 (Match if the series name includes the keyword)
-                                if (seriesName.includes(seriesTierList[i])) return i;
+                                if (s.includes(seriesTierList[i])) return i;
                             }
-                            return 999; // 沒在表上的，通通丟到最下面 (If not on the list, throw it to the very bottom)
+                            return 999;
                         };
-
                         let tierA = getTierWeight(a);
                         let tierB = getTierWeight(b);
-
-                        // 如果效能階級不同，階級高的（數字小的）排前面
-                        // (If performance tiers differ, the higher tier (smaller number) comes first)
-                        if (tierA !== tierB) {
-                            return tierA - tierB;
-                        }
-
-                        // 如果階級相同（或都沒在表上），才退回去比數字大小
-                        // (If tiers are the same, fall back to comparing numbers)
-                        let numA = extractNumberFromString(a);
-                        let numB = extractNumberFromString(b);
-                        if (numA !== numB) { return numB - numA; }
-                        
-                        // 數字也一樣，最後比字母順序 (If numbers are the same, compare alphabetically)
-                        return a.localeCompare(b);
+                        if (tierA !== tierB) return tierA - tierB;
+                        return extractNumberFromString(b) - extractNumberFromString(a);
                     })
                     .map(key => ({ seriesName: key, models: seriesObj[key] }));
                     
