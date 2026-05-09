@@ -93,10 +93,11 @@ function categorizeBrandsAndModels(models) {
             (upperTitle.includes("NOTE 20") || upperTitle.includes("N98") || upperTitle.includes("N97") || upperTitle.includes("NOTE10") || upperTitle.includes("NOTE 10+"))
         ) {
             brand = "SAMSUNG";
-            if (upperTitle.includes("S2") || upperTitle.includes("S10")) seriesName = "Galaxy S 系列 (頂級旗艦)";
+            // 【修復關鍵】：把 TAB 的判斷移到最上方，優先攔截所有平板 (Move TAB check to the top to intercept all tablets first)
+            if (upperTitle.includes("TAB")) seriesName = "Galaxy Tab 平板系列";
+            else if (upperTitle.includes("S2") || upperTitle.includes("S10")) seriesName = "Galaxy S 系列 (頂級旗艦)";
             else if (upperTitle.includes("FOLD") || upperTitle.includes("FLIP")) seriesName = "Galaxy Z 系列 (折疊螢幕)";
             else if (upperTitle.includes("NOTE")) seriesName = "Galaxy Note 系列";
-            else if (upperTitle.includes("TAB")) seriesName = "Galaxy Tab 平板系列";
             else if (upperTitle.includes("A5") || upperTitle.includes("A3")) seriesName = "Galaxy A5/A3 系列 (中高階)";
             else if (upperTitle.includes("A1") || upperTitle.includes("A2") || upperTitle.includes("A0") || upperTitle.includes("A6") || upperTitle.includes("A7")) seriesName = "Galaxy A2/A1/A0 系列 (入門)";
             else if (upperTitle.includes("M")) seriesName = "Galaxy M 系列";
