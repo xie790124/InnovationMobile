@@ -294,12 +294,53 @@
                     });
                 });
 
-                // 2. 系列名稱排序：依照數字大到小 (Series name sorting)
+               // 2. 終極升級：系列名稱依效能階級排序 (Ultimate Upgrade: Sort series names by performance tier)
+                // 建立全品牌的效能階梯表，越前面的權重越高 (排越上面)
+                // (Create an all-brand performance tier table, earlier items have higher weight and rank higher)
+                const seriesTierList = [
+                    // Apple
+                    "iPad 系列", "iPhone 17", "iPhone 16", "iPhone 15", "iPhone 14", "iPhone 13", "iPhone 12", "iPhone 11", "iPhone X", "iPhone SE", "iPhone 8", "iPhone Air",
+                    // SAMSUNG (Z折疊 / S旗艦 / Note / Tab平板 / A中高 / M入門)
+                    "Galaxy Z", "Galaxy S", "Galaxy Note", "Galaxy Tab", "Galaxy A", "Galaxy M",
+                    // OPPO (Find旗艦 / Reno中高 / A入門)
+                    "OPPO Find", "OPPO Reno", "OPPO A",
+                    // vivo (X旗艦 / V中高 / Y高CP)
+                    "vivo X", "vivo V", "vivo Y",
+                    // ASUS (ROG電競 / Zenfone旗艦)
+                    "ROG 系列", "Zenfone 系列",
+                    // 小米 (Xiaomi旗艦 / Redmi紅米)
+                    "Xiaomi 系列", "Redmi 系列",
+                    // 穿戴裝置放最後
+                    "Watch 系列"
+                ];
+
                 const sortedArray = Object.keys(seriesObj)
                     .sort((a, b) => {
+                        // 尋找系列在階梯表中的位置 (Find the series position in the tier list)
+                        let getTierWeight = (seriesName) => {
+                            for (let i = 0; i < seriesTierList.length; i++) {
+                                // 只要系列名稱包含關鍵字就算命中 (Match if the series name includes the keyword)
+                                if (seriesName.includes(seriesTierList[i])) return i;
+                            }
+                            return 999; // 沒在表上的，通通丟到最下面 (If not on the list, throw it to the very bottom)
+                        };
+
+                        let tierA = getTierWeight(a);
+                        let tierB = getTierWeight(b);
+
+                        // 如果效能階級不同，階級高的（數字小的）排前面
+                        // (If performance tiers differ, the higher tier (smaller number) comes first)
+                        if (tierA !== tierB) {
+                            return tierA - tierB;
+                        }
+
+                        // 如果階級相同（或都沒在表上），才退回去比數字大小
+                        // (If tiers are the same, fall back to comparing numbers)
                         let numA = extractNumberFromString(a);
                         let numB = extractNumberFromString(b);
                         if (numA !== numB) { return numB - numA; }
+                        
+                        // 數字也一樣，最後比字母順序 (If numbers are the same, compare alphabetically)
                         return a.localeCompare(b);
                     })
                     .map(key => ({ seriesName: key, models: seriesObj[key] }));
@@ -328,7 +369,7 @@
             
             // 【核心升級：自訂常用品牌順序】 (Core Upgrade: Custom order for frequently used brands)
             // 您可以在這裡隨意更改順序，越前面的會排在越左邊 (You can freely change the order here; the earlier ones will be placed further to the left)
-            const topBrands = ["Apple", "SAMSUNG", "OPPO", "vivo", "ASUS"];
+            const topBrands = ["Apple", "SAMSUNG", "OPPO", "vivo", "小米", "ASUS"];
 
             brands.sort((a, b) => {
                 let indexA = topBrands.indexOf(a);
