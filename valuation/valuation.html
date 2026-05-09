@@ -151,33 +151,39 @@
             }
         }
 
-        function processData(text) {
+      function processData(text) {
             console.log("【步驟 5】開始解析文字內容 (Step 5: Start parsing text content)");
             const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
             const parsedModels = [];
 
             for (let i = 0; i < lines.length; i++) {
+                // 【新增功能】如果這一行以 # 或 // 開頭，直接跳過不讀取 (Skip lines starting with # or //)
+                if (lines[i].startsWith('#') || lines[i].startsWith('//')) {
+                    continue;
+                }
+
                 if (lines[i].startsWith('http') && lines[i].includes('sogi.com.tw')) {
                     if (lines[i].includes('/usedprices/')) {
-                        if (i > 0 && !lines[i-1].startsWith('http')) {
-                            let rawTitle = lines[i-1];
-                            let title = rawTitle.split('] ').pop().trim(); 
-                            parsedModels.push({ title: title, url: lines[i] });
+                        if (i > 0) {
+                            let prevLine = lines[i-1];
+                            // 確保標題行本身也不是註解 (Ensure the title line itself is not a comment)
+                            if (!prevLine.startsWith('#') && !prevLine.startsWith('//') && !prevLine.startsWith('http')) {
+                                let title = prevLine.split('] ').pop().trim(); 
+                                parsedModels.push({ title: title, url: lines[i] });
+                            }
                         }
                     }
                 }
             }
 
-            console.log("【步驟 6】解析完成，找到有效資料數 (Step 6: Parsing complete, valid records): " + parsedModels.length);
+            console.log("【步驟 6】解析完成，找到有效資料數: " + parsedModels.length);
 
             if (parsedModels.length === 0) {
-                cardsContainer.innerHTML = `<div class="error-msg"><h3>⚠️ 資料庫內容無效 (Invalid Database Content)</h3></div>`;
+                cardsContainer.innerHTML = `<div class="error-msg"><h3>⚠️ 資料庫內容無效</h3></div>`;
                 return;
             }
 
             globalCategorizedData = categorizeBrandsAndModels(parsedModels);
-            console.log("【步驟 7】動態分類完成，準備渲染畫面 (Step 7: Categorization complete)");
-            
             renderBrandTabs();
         }
 
