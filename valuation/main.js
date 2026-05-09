@@ -1,4 +1,3 @@
-<script>
         const tabsContainer = document.getElementById("brand-tabs");
         const cardsContainer = document.getElementById("cards-container");
         
@@ -309,4 +308,3 @@
                 cardsContainer.appendChild(gridEl);
             });
         }
-    </script>
