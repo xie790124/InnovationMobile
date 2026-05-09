@@ -1,3 +1,4 @@
+//(手機王專用：分類邏輯、排序規則)
         const tabsContainer = document.getElementById("brand-tabs");
         const cardsContainer = document.getElementById("cards-container");
         
