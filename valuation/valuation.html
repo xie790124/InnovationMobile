@@ -1,28 +1,14 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <title>手機王-二手設備報價系統</title>
-    <link rel="icon" href="data:,">
-    
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <div class="container">
-        <div class="header-box">
-            <h1 style="margin: 0; color: #333; font-size: 24px;">手機王-二手設備即時估價系統</h1>
-            <p style="margin: 10px 0 0 0; color: #666;">系統將自動讀取所有品牌報價資料...</p>
-        </div>
-
-        <div id="brand-tabs" class="tabs-container"></div>
-
-        <div id="cards-container">
-            <div class="status-msg">資料載入中，請稍候... (Loading data, please wait...)</div>
-        </div>
+    <div class="source-toggle">
+        <button onclick="switchSource('sogi')">手機王二手價</button>
+        <button onclick="switchSource('chuangyu')">創宇回收報價</button>
     </div>
 
-    <script src="main.js"></script>
+    <div id="brand-tabs"></div>
+    <div id="cards-container"></div>
 
+    <script src="js/core.js"></script>
 </body>
-</html>
