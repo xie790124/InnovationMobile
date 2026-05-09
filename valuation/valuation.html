@@ -214,7 +214,7 @@
                     else if (upperTitle.includes("GALAXY Z")) seriesName = "Galaxy Z 系列 (折疊螢幕)";
                     else if (upperTitle.includes("NOTE")) seriesName = "Galaxy Note 系列 (Series)";
                     else if (upperTitle.includes("GALAXY A")) {
-                        else if (upperTitle.includes("A5")) seriesName = "Galaxy A5 系列 (中高階)";
+                        if (upperTitle.includes("A5")) seriesName = "Galaxy A5 系列 (中高階)";
                         else if (upperTitle.includes("A3")) seriesName = "Galaxy A3 系列 (中階)";
                         else if (upperTitle.includes("A2") || upperTitle.includes("A1") || upperTitle.includes("A0")) seriesName = "Galaxy A2/A1/A0 系列 (入門)";
                         else seriesName = "Galaxy A 系列 (其他)";
