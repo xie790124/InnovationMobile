@@ -23,11 +23,6 @@
         <header class="text-center mb-10 mt-4 relative">
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-3 tracking-tight drop-shadow-sm">好評標語小工具 <span class="text-2xl text-gray-400 font-medium align-middle">(Review Toolbox)</span></h1>
             <p class="text-slate-500 font-medium tracking-wide mb-4">一鍵複製，快速分享 <span class="text-sm text-slate-400">(One-click copy to share)</span></p>
-            
-            <button onclick="loadRandomSlogans()" class="inline-flex items-center justify-center gap-2 bg-white text-indigo-600 font-semibold px-5 py-2 rounded-full shadow-sm border border-indigo-100 hover:bg-indigo-50 hover:shadow transition-all active:scale-95">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                隨機換一批文案 <span class="text-xs font-normal">(Refresh Slogans)</span>
-            </button>
         </header>
 
         <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 md:p-8 mb-12 border border-white relative overflow-hidden transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] group flex flex-col md:flex-row items-center justify-between gap-6">
@@ -46,4 +41,316 @@
                     <span class="text-xs font-bold text-yellow-700 bg-yellow-100/80 px-2.5 py-0.5 rounded-full border border-yellow-200/50">專屬回饋 <span class="font-normal opacity-80">(Exclusive)</span></span>
                 </div>
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">滿意我們的服務嗎？ <span class="text-lg text-slate-500 font-medium ml-1">(Satisfied with our service?)</span></h2>
-                <p class="text-slate-600 font-medium">您的五星好評是我們最大的動力！點擊右側按鈕直接前往評價。<br class="hidden md:block"><span class="text-sm text-slate-4
+                <p class="text-slate-600 font-medium">您的五星好評是我們最大的動力！點擊右側按鈕直接前往評價。<br class="hidden md:block"><span class="text-sm text-slate-400 font-normal">(Your 5-star review is our motivation! Click the button to review.)</span></p>
+            </div>
+
+            <div class="z-10 w-full md:w-auto shrink-0 flex justify-center">
+                <a href="https://maps.app.goo.gl/FW11ELUjzCGBtYwG7" target="_blank" rel="noopener noreferrer" class="relative inline-flex items-center justify-center w-full md:w-auto px-8 py-4 font-bold text-white transition-all duration-300 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-2xl hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 hover:shadow-[0_10px_25px_-5px_rgba(79,70,229,0.5)] hover:-translate-y-1 group/btn overflow-hidden border border-white/20">
+                    <div class="absolute inset-0 w-full h-full" style="animation: shimmer 2.5s infinite linear; background-image: linear-gradient(110deg, transparent, rgba(255,255,255,0.4), transparent); transform: translateX(-100%);"></div>
+                    <svg class="w-6 h-6 mr-3 transition-transform duration-300 group-hover/btn:scale-110 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <div class="flex flex-col items-start text-left">
+                        <span class="text-lg tracking-wide drop-shadow-md">留下五星好評</span>
+                        <span class="text-[11px] font-normal text-blue-100 tracking-wider mt-0.5">(Leave a 5-Star Review)</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-blue-100/50">
+                        📱 專業維修類 <span class="font-normal opacity-70">(Professional Repair)</span>
+                    </span>
+                    <p id="slogan-repair-1" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-repair-1', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-blue-100/50">
+                        📱 專業維修類 <span class="font-normal opacity-70">(Professional Repair)</span>
+                    </span>
+                    <p id="slogan-repair-2" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-repair-2', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-emerald-100/50">
+                        💰 二手買賣類 <span class="font-normal opacity-70">(Second-hand Trading)</span>
+                    </span>
+                    <p id="slogan-trade-1" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-trade-1', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-emerald-100/50">
+                        💰 二手買賣類 <span class="font-normal opacity-70">(Second-hand Trading)</span>
+                    </span>
+                    <p id="slogan-trade-2" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-trade-2', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-purple-100/50">
+                        🌟 服務口碑類 <span class="font-normal opacity-70">(Service Reputation)</span>
+                    </span>
+                    <p id="slogan-service-1" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-service-1', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-pink-600 transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-purple-100/50">
+                        🌟 服務口碑類 <span class="font-normal opacity-70">(Service Reputation)</span>
+                    </span>
+                    <p id="slogan-service-2" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-service-2', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-pink-600 transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900/95 backdrop-blur-sm text-white px-6 py-4 rounded-2xl shadow-2xl hidden items-center toast-enter z-50 border border-slate-700">
+        <div class="bg-green-500/20 p-1.5 rounded-full mr-3">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <span class="font-medium tracking-wide">已複製到剪貼簿 <span class="text-sm text-slate-300 font-normal ml-1">(Copied to clipboard!)</span></span>
+    </div>
+
+    <script>
+        // --- 108 組擴充文案資料庫 (108 Slogans Database) ---
+        const slogansDB = {
+            repair: [
+                "螢幕摔破馬上就修好，技術超級專業，收費也很透明！大推！",
+                "換電池速度很快，還有提供保固，師傅解說非常詳細。",
+                "原本以為手機沒救了，沒想到店長妙手回春，資料也都完整保留！",
+                "維修過程公開透明，不會亂推銷，價格比原廠便宜很多，CP值超高。",
+                "泡水機竟然也救得回來，維修技術真的是附近最好的，值得信任。",
+                "主機板維修超神！原本別家說要換主機板，這邊居然修好了，省了一大筆錢。",
+                "鏡頭玻璃破掉來換，手腳超俐落，換完跟新的一模一樣。",
+                "尾插充電不良來清理更換，老闆很細心檢查其他功能，服務一百分。",
+                "按鍵失靈來修，馬上查出問題點，維修報價很實在。",
+                "聽筒沒聲音的毛病終於解決了，專業的檢測設備讓人很安心。",
+                "修手機找這間準沒錯，不會像其他家亂報價，童叟無欺的好店。",
+                "當天送修當天就能拿，急用手機的救星，維修品質無可挑剔。",
+                "喇叭破音換了零件馬上好，師傅還幫忙清理灰塵，超貼心。",
+                "FaceID 突然失效，來這裡檢測維修速度超快，技術力滿分。",
+                "手機嚴重摔變形，居然能完美校正回來，這家店根本是手機醫院！",
+                "檢測不用收檢測費，老闆會很中肯地給維修建議，不會為了賺錢亂修。",
+                "預約維修完全不用等，一到現場馬上處理，節省超多時間。",
+                "換了副廠螢幕但畫質跟觸控都超讚，價格很佛心，大推！",
+                "網路一直斷線斷訊，老闆一查就幫我修好天線，太厲害了。",
+                "電池膨脹超危險，老闆火速幫我更換，還教我怎麼保養電池。",
+                "手機瘋狂發燙耗電，來店裡重上散熱膏跟換電池後像重獲新生！",
+                "震動馬達壞掉連帶影響使用，修好之後終於不會漏接電話了。",
+                "換後背玻璃速度超快，黏合得很完美，完全看不出修過的痕跡。",
+                "麥克風雜音問題困擾很久，來這裡換個小零件就解決了，超讚。",
+                "在別家修不好的疑難雜症，老闆看了一下就抓出病灶，真正的高手在民間。",
+                "維修有附維修單跟保固卡，讓人感覺非常正規又安心。",
+                "朋友推薦來這裡修面板，果然名不虛傳，又快又便宜。",
+                "忘記螢幕解鎖密碼，老闆幫忙重置處理，還順便幫我清灰塵。",
+                "維修區是半開放的，看得到自己手機怎麼被拆裝，很放心不會被偷換零件。",
+                "原廠過保固來這裡修最划算，零件品質好，老闆又有良心。",
+                "鏡頭無法對焦，換了相機模組馬上搞定，拍照又變清晰了！",
+                "開不了機的死機狀態，竟然一小時內就幫我救活，太神啦！",
+                "換電池還送免費保護貼，這家店的 CP 值真的突破天際。",
+                "師傅修手機的工具超級專業，一看就知道是身經百戰的老手。",
+                "雖然店面不大，但維修能量超強，以後手機有問題只來這家。",
+                "晚上很晚了還願意幫我趕件維修，解決了明天出國的燃眉之急，非常感謝！"
+            ],
+            trade: [
+                "舊機回收價格很高，換購新機超划算，店長還幫忙把資料轉移得很完美。",
+                "買了二手機，外觀跟新的一樣，經過嚴格檢測用起來很安心。",
+                "二手機種類超多可以選，價格公道，還有實體店面保固，買得沒壓力。",
+                "估價過程很透明，不會亂砍價，是賣舊手機的首選通訊行。",
+                "幫長輩買二手機，老闆很有耐心教怎麼用，服務態度超級好！",
+                "在這買二手機還有送貼膜跟殼，配件給得很佛心，大推！",
+                "手機收購價格比網路行情還好，交易過程快速不囉嗦，讚。",
+                "二手平板機況極佳，電池健康度也很高，買到賺到！",
+                "二手機買賣履歷很清楚，不會買到來源不明的機器，這點讓人很放心。",
+                "舊換新折抵很乾脆，完全不拖泥帶水，換機體驗超棒。",
+                "剛買的二手機遇到一點設定問題，拿回來店裡馬上幫忙解決，售後服務極佳。",
+                "想找高CP值的備用機來這就對了，老闆會根據需求推薦最適合的型號。",
+                "收購舊機當場付現，不用等轉帳，簡單俐落的交易方式我喜歡。",
+                "二手 iPhone 的電池都有特別挑過，買回去直接用不用馬上換電池，很棒。",
+                "在網路上看到這家的二手機評價很好，來實體店看果然機況都很漂亮。",
+                "拿著螢幕破掉的舊機來估價，原本以為沒殘值，老闆還是給了個好價錢！",
+                "提供無卡分期買二手機，對學生族群真的很友善，審核也很快。",
+                "二手機都有經過專業軟體清除資料，買賣都不用擔心隱私外洩。",
+                "除了手機，連舊平板跟蘋果手錶都有在收購，一站式服務很方便。",
+                "買給小孩當遊戲機的二手安卓，效能很好價格又便宜，CP值破表。",
+                "買二手機最怕遇到拼裝機，老闆當面用軟體驗機給看，超有誠信！",
+                "舊機回收不限品牌，連放了很久的骨董機都能折抵一點錢，不無小補。",
+                "這家店的二手旗艦機超級多，想用便宜價格體驗頂級規格來這就對了。",
+                "收購報價比原廠的折抵還高出不少，強烈建議大家來這邊賣舊機。",
+                "盒裝配件不齊全的舊機，老闆也給了合理的收購價，不會雞蛋裡挑骨頭。",
+                "二手買賣合約寫得很清楚，保障雙方權益，是一家正派經營的好店。",
+                "幫老婆換了最新款，舊機直接在這處理掉，無縫接軌超省事。",
+                "買二手平板來追劇，老闆還挑了一台外觀完美無刮痕的給我，超讚。",
+                "現場展示的二手機都擦拭得很乾淨，像展示新機一樣，看了就想買。",
+                "這裡的二手機流動率很高，常來逛逛總能挖到物超所值的寶貝。",
+                "把合約續約拿到的全新機拿來這裡賣，收購價格非常滿意。",
+                "買了二手機發現不習慣系統，老闆竟然願意讓我貼錢換別台，服務太好了。",
+                "公司尾牙抽到的手機用不到，拿來這裡換現金，處理速度一流。",
+                "二手機都會附上完整的充電組，不像有些店只給裸機，這點很加分。",
+                "買賣過程完全沒有壓力，老闆就像朋友一樣幫忙分析利弊。",
+                "如果有朋友要買賣二手機，我絕對第一個推薦這間最公道的通訊行！"
+            ],
+            service: [
+                "店員態度超級親切，有問必答，不會因為只買小配件就擺臉色。",
+                "貼膜技術超好，完全沒有氣泡跟灰塵，強迫症看了都覺得舒服！",
+                "遇到手機當機不會處理，來店裡老闆免費幫忙重置排除，真的是好鄰居。",
+                "買手機配件款式很多，價格也很親民，以後都會來這家買。",
+                "門號攜碼優惠解說得很清楚，不會強迫推銷高資費，真心為客人著想。",
+                "轉移LINE資料卡住，店長花了很多時間幫忙弄好，太感激了！",
+                "環境很乾淨明亮，等待維修的時候還有沙發可以坐，體驗很好。",
+                "絕對是附近最實在的通訊行，不會把客人當肥羊宰，值得推薦給親朋好友。",
+                "買保護殼老闆還幫忙清潔手機，小細節非常用心，大推服務品質。",
+                "營業時間很長，下班過來處理手機問題也很方便，真的是上班族的福音。",
+                "問了好多蠢問題老闆都不厭其煩地回答，專業又充滿熱情的好店！",
+                "就算不是在這邊買的手機，來詢問設定問題也是笑臉迎人，服務精神滿分。",
+                "幫長輩把字體調大、設定快捷鍵，老闆的耐心真的讓我這個做兒女的自嘆不如。",
+                "門號合約到期來做健檢，老闆幫我找到更便宜又夠用的資費，超省錢。",
+                "手機忘記密碼被鎖死，還好有老闆神救援，不然裡面的照片就全沒了。",
+                "這間店根本是社區的科技顧問，有什麼 3C 疑難雜症來找老闆就對了。",
+                "在這家店買了新手機，老闆送了一大堆實用配件，滿載而歸超開心。",
+                "這裡的防摔殼品牌超級多，可以親手試裝手感，比在網路上買盲盒好太多了。",
+                "新機設定的步驟好繁瑣，老闆全部幫我辦到好，只要拿到就能馬上用。",
+                "辦理攜碼的流程超快，不會讓人等很久，效率一級棒的通訊行。",
+                "店裡還提供免費的咖啡茶水，等待手機轉資料的時間完全不無聊。",
+                "看到店裡一直有老客人回流，就知道這家店的服務做得很扎實。",
+                "教我怎麼用雲端備份資料，上了寶貴的一課，再也不怕手機壞掉照片不見了。",
+                "買了防窺膜，貼的精準度超高，老闆的手真的很巧。",
+                "在別家受了一肚子氣，來這家馬上被溫暖的服務治癒，以後只來這裡了。",
+                "不管是新機、二手機還是維修，價格都非常公道，是附近最推薦的通訊行。",
+                "老闆會根據我的日常使用習慣，推薦最適合的保護貼材質，非常專業。",
+                "每次來買線材老闆都會提醒我不要邊充邊玩，很關心客人的用機安全。",
+                "免費幫忙把 SIM 卡裁切成符合新手機的大小，真的是揪甘心。",
+                "在地深耕多年的老店，信譽保證，買賣手機找他們最放心。",
+                "就算只是進來問問行情，店員也笑嘻嘻地招待，完全不會有強迫推銷的壓迫感。",
+                "幫忙設定各種支付 APP，真的是上了年紀的人的好幫手。",
+                "朋友強力推薦的通訊行，今天親自體驗果然服務滿分，實至名歸。",
+                "手機保護貼破了馬上來換，幾分鐘就搞定，換完就像拿了一支新手機。",
+                "店內的展示機可以隨便試滑，不會有店員緊迫盯人，逛起來很舒服。",
+                "整體服務態度、專業度、環境整潔度都是五顆星，無可挑剔的優質通訊行！"
+            ]
+        };
+
+        // --- 陣列洗牌函數 (Array Shuffle Function) ---
+        function shuffleArray(array) {
+            let shuffled = array.slice();
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // --- 載入隨機標語函數 (Load Random Slogans Function) ---
+        function loadRandomSlogans() {
+            // 防呆確認 HTML 元素存在 (Check if elements exist before injecting)
+            const repair1 = document.getElementById('slogan-repair-1');
+            if (!repair1) return; // 避免因為找不到元素而報錯
+
+            const randomRepair = shuffleArray(slogansDB.repair).slice(0, 2);
+            const randomTrade = shuffleArray(slogansDB.trade).slice(0, 2);
+            const randomService = shuffleArray(slogansDB.service).slice(0, 2);
+
+            repair1.innerText = randomRepair[0];
+            document.getElementById('slogan-repair-2').innerText = randomRepair[1];
+            
+            document.getElementById('slogan-trade-1').innerText = randomTrade[0];
+            document.getElementById('slogan-trade-2').innerText = randomTrade[1];
+            
+            document.getElementById('slogan-service-1').innerText = randomService[0];
+            document.getElementById('slogan-service-2').innerText = randomService[1];
+        }
+
+        // 當網頁載入完成時，自動執行一次隨機載入 (Auto-load on page ready)
+        document.addEventListener('DOMContentLoaded', loadRandomSlogans);
+
+
+        // --- 原有的設備偵測與複製功能 (Original Device Detection & Copy Functions) ---
+        function getDevicePrefix() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+                return "【iPhone/iPad】";
+            }
+            if (/android/i.test(ua)) {
+                return "【安卓手機 (Android)】";
+            }
+            if (/Macintosh|Mac OS X/i.test(ua)) {
+                return "【Mac 電腦】";
+            }
+            if (/Windows/i.test(ua)) {
+                return "【Windows 電腦】";
+            }
+            return ""; 
+        }
+
+        function copyToClipboard(elementId, btnElement) {
+            const baseText = document.getElementById(elementId).innerText;
+            const devicePrefix = getDevicePrefix();
+            const textToCopy = devicePrefix + baseText;
+            
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = textToCopy;
+            tempTextArea.style.position = "fixed";
+            tempTextArea.style.top = "-9999px";
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+
+            const originalHTML = btnElement.innerHTML;
+            const originalBg = btnElement.className;
+            
+            btnElement.innerHTML = `
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>已複製 <span class="text-sm font-normal opacity-90">(Copied!)</span></span>
+            `;
+            btnElement.className = 'w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium py-3 px-4 rounded-xl shadow-md flex justify-center items-center gap-2 transition-all duration-300';
+            
+            const toast = document.getElementById('toast');
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            
+            setTimeout(() => {
+                btnElement.innerHTML = originalHTML;
+                btnElement.className = originalBg;
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
