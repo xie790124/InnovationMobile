@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>好評標語小工具 (Review Slogan Widget)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .toast-enter { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideIn {
+            from { transform: translateY(100%) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-100 via-gray-50 to-blue-50 min-h-screen p-4 md:p-8 font-sans selection:bg-blue-200 selection:text-blue-900">
+
+    <div class="max-w-5xl mx-auto">
+        <header class="text-center mb-10 mt-4 relative">
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-3 tracking-tight drop-shadow-sm">好評標語小工具 <span class="text-2xl text-gray-400 font-medium align-middle">(Review Toolbox)</span></h1>
+            <p class="text-slate-500 font-medium tracking-wide mb-4">一鍵複製，快速分享 <span class="text-sm text-slate-400">(One-click copy to share)</span></p>
+        </header>
+
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 md:p-8 mb-12 border border-white relative overflow-hidden transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] group flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none group-hover:bg-yellow-400/20 transition-all duration-700"></div>
+            <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-400/20 transition-all duration-700"></div>
+
+            <div class="flex-1 text-center md:text-left z-10 w-full">
+                <div class="inline-flex items-center justify-center md:justify-start gap-2 mb-3 w-full">
+                    <div class="flex text-yellow-400 drop-shadow-sm">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    </div>
+                    <span class="text-xs font-bold text-yellow-700 bg-yellow-100/80 px-2.5 py-0.5 rounded-full border border-yellow-200/50">專屬回饋 <span class="font-normal opacity-80">(Exclusive)</span></span>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">滿意我們的服務嗎？ <span class="text-lg text-slate-500 font-medium ml-1">(Satisfied with our service?)</span></h2>
+                <p class="text-slate-600 font-medium">您的五星好評是我們最大的動力！點擊右側按鈕直接前往評價。<br class="hidden md:block"><span class="text-sm text-slate-400 font-normal">(Your 5-star review is our motivation! Click the button to review.)</span></p>
+            </div>
+
+            <div class="z-10 w-full md:w-auto shrink-0 flex justify-center">
+                <a href="https://maps.app.goo.gl/48mWyny9bw6mXt2j7" target="_blank" rel="noopener noreferrer" class="relative inline-flex items-center justify-center w-full md:w-auto px-8 py-4 font-bold text-white transition-all duration-300 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-2xl hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 hover:shadow-[0_10px_25px_-5px_rgba(79,70,229,0.5)] hover:-translate-y-1 group/btn overflow-hidden border border-white/20">
+                    <div class="absolute inset-0 w-full h-full" style="animation: shimmer 2.5s infinite linear; background-image: linear-gradient(110deg, transparent, rgba(255,255,255,0.4), transparent); transform: translateX(-100%);"></div>
+                    <svg class="w-6 h-6 mr-3 transition-transform duration-300 group-hover/btn:scale-110 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <div class="flex flex-col items-start text-left">
+                        <span class="text-lg tracking-wide drop-shadow-md">留下五星好評</span>
+                        <span class="text-[11px] font-normal text-blue-100 tracking-wider mt-0.5">(Leave a 5-Star Review)</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-emerald-100/50">
+                        📱 購機買賣類 <span class="font-normal opacity-70">(Device Sales & Trade-in)</span>
+                    </span>
+                    <p id="slogan-sales-1" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-sales-1', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-emerald-100/50">
+                        📱 購機買賣類 <span class="font-normal opacity-70">(Device Sales & Trade-in)</span>
+                    </span>
+                    <p id="slogan-sales-2" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-sales-2', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-blue-100/50">
+                        📄 門號申辦類 <span class="font-normal opacity-70">(Telecom Services)</span>
+                    </span>
+                    <p id="slogan-telecom-1" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-telecom-1', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-blue-100/50">
+                        📄 門號申辦類 <span class="font-normal opacity-70">(Telecom Services)</span>
+                    </span>
+                    <p id="slogan-telecom-2" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-telecom-2', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-purple-100/50">
+                        🔄 系統設定與轉移 <span class="font-normal opacity-70">(System Setup)</span>
+                    </span>
+                    <p id="slogan-setup-1" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-setup-1', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-pink-600 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-purple-100/50">
+                        🔄 系統設定與轉移 <span class="font-normal opacity-70">(System Setup)</span>
+                    </span>
+                    <p id="slogan-setup-2" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-setup-2', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-pink-600 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-amber-100/50">
+                        🔧 維修代辦類 <span class="font-normal opacity-70">(Repair Dispatch)</span>
+                    </span>
+                    <p id="slogan-dispatch-1" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-dispatch-1', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-amber-500 group-hover:to-orange-500 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+            <div class="group bg-white/90 backdrop-blur-sm p-7 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/60 relative flex flex-col justify-between">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs px-3.5 py-1.5 rounded-full mb-5 font-bold tracking-wide border border-amber-100/50">
+                        🔧 維修代辦類 <span class="font-normal opacity-70">(Repair Dispatch)</span>
+                    </span>
+                    <p id="slogan-dispatch-2" class="text-slate-700 leading-relaxed mb-6 font-medium text-justify"></p>
+                </div>
+                <button onclick="copyToClipboard('slogan-dispatch-2', this)" class="w-full bg-slate-800 text-white font-medium py-3 px-4 rounded-xl group-hover:bg-gradient-to-r group-hover:from-amber-500 group-hover:to-orange-500 transition-all duration-300 shadow-sm flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>複製 <span class="text-sm opacity-80 font-normal">(Copy)</span></span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900/95 backdrop-blur-sm text-white px-6 py-4 rounded-2xl shadow-2xl hidden items-center toast-enter z-50 border border-slate-700">
+        <div class="bg-green-500/20 p-1.5 rounded-full mr-3">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <span class="font-medium tracking-wide">已複製到剪貼簿 <span class="text-sm text-slate-300 font-normal ml-1">(Copied to clipboard!)</span></span>
+    </div>
+
+    <script>
+        // --- 144 組全新擴充文案資料庫 (144 Slogans Database) ---
+        const slogansDB = {
+            sales: [
+                "新機價格比原廠還要殺！老闆還加碼送了實用的配件組合，CP值爆表。",
+                "買二手平板來追劇，機況超漂亮電池又健康，真的是買到賺到！",
+                "來這裡買最新款手機完全不用等預購，現貨供應超有效率。",
+                "拿著螢幕破掉的舊機來估價，沒想到老闆給的折抵金超有誠意。",
+                "二手機都有經過專業軟體清除資料，買賣履歷清楚，讓人很放心。",
+                "這裡的二手機流動率很高，常來逛逛總能挖到物超所值的旗艦機。",
+                "無卡分期審核速度超快，對我們學生族群真的很友善，大推！",
+                "把合約續約拿到的全新機拿來賣，收購價格比網路行情還好。",
+                "老闆親自驗機把關，二手買賣完全不怕買到拼裝機或問題機。",
+                "買給長輩的便宜備用機，效能超順暢，老闆還挑了一台無刮痕的。",
+                "這家店的保護殼跟貼膜款式超齊全，買新機順便全副武裝一次搞定。",
+                "舊換新折抵很乾脆，不拖泥帶水，換機體驗超棒的通訊行。",
+                "收購舊機當場付現，不用等轉帳，簡單俐落的交易方式我喜歡。",
+                "二手 iPhone 的電池都有特別挑過，買回去直接用不用馬上換電池。",
+                "在網路上看到這家的評價很好，親自來買二手機果然品質一級棒。",
+                "買了二手機發現不習慣系統，老闆竟然願意讓我貼錢換別台，服務太好了。",
+                "公司尾牙抽到的手機用不到，拿來這裡換現金，處理速度一流。",
+                "二手機都會附上完整的充電配件，不像有些店只給裸機，這點很加分。",
+                "買賣過程完全沒有壓力，老闆會針對預算幫忙挑選最適合的型號。",
+                "舊機回收不限品牌，連放了很久的骨董機都能折抵一點錢，不無小補。",
+                "二手旗艦機選擇超多，想用便宜價格體驗頂級規格來這就對了。",
+                "買新機還幫忙免費轉移所有資料，不用自己回家摸索半天。",
+                "收購報價比原廠的折抵還高出不少，強烈建議大家來這邊賣舊機。",
+                "盒裝配件不齊全的舊機，老闆也給了合理的收購價，不刻意刁難。",
+                "二手買賣合約寫得很清楚，保障雙方權益，是一家正派經營的好店。",
+                "幫老婆換了最新款，舊機直接在這處理掉，無縫接軌超省事。",
+                "現場展示的二手機都擦拭得很乾淨，像展示新機一樣，看了就想買。",
+                "就算只是進來詢問二手行情，店員也笑嘻嘻地招待，毫無壓迫感。",
+                "買新機遇到缺貨，老闆特地幫我從其他店調貨過來，超級用心。",
+                "除了手機，連舊平板跟蘋果手錶都有在收購，一站式服務很方便。",
+                "在這裡買空機比去電信門市便宜很多，還有完善的售後保固。",
+                "二手機皆享有實體店面保固，比在網路上跟陌生人面交有保障多了。",
+                "剛買的手機遇到一點操作問題，拿回來店裡馬上幫忙解決，售後極佳。",
+                "店長推薦的高CP值安卓機超好用，完全符合我的日常需求，沒白花錢。",
+                "朋友強力推薦的購機首選，今天親自體驗果然服務滿分，實至名歸。",
+                "如果有親友要買賣新機或二手機，我絕對第一個推薦這間通訊行！"
+            ],
+            telecom: [
+                "攜碼退佣超敢給！老闆幫我試算最划算的費率，每個月省超多錢。",
+                "門號合約到期來做健檢，才發現以前繳了超多冤枉錢，感謝老闆幫忙降轉。",
+                "辦理攜碼的流程超快，不會讓人等很久，效率一級棒的通訊行。",
+                "新辦門號解說得很清楚，不會強迫推銷高資費，真心為客人著想。",
+                "升級 5G 方案老闆分析得很中肯，沒有硬推不適合我的昂貴合約。",
+                "就算不是買手機，單純來繳費跟問合約，態度也是無可挑剔的好。",
+                "原本的電信訊號很差，老闆幫我查詢 NP 到哪家最穩，超專業！",
+                "續約買新機折扣超多，比去直營門市辦還要划算太多了。",
+                "長輩的預付卡問題老闆也很有耐心地幫忙處理，真的是好鄰居。",
+                "解約違約金老闆幫忙精算，原來現在 NP 過去還能倒賺，太厲害了。",
+                "門號申辦合約條文一條一條解釋給我聽，完全不用怕被合約綁架。",
+                "幫小孩辦了最便宜的上網吃到飽方案，老闆推薦的資費真的超神。",
+                "這間店根本是電信資費專家，來一趟就解決了我所有的合約疑惑。",
+                "新辦門號還送了很棒的精美配件，讓人有種賓至如歸的感覺。",
+                "不會為了賺佣金叫客人辦超高資費，是一家有良心、推優質方案的好店。",
+                "幫公司行號辦理企業專案，處理速度快且資料準備明確，幫了大忙。",
+                "違約金試算超精準，還教我怎麼去原電信解約最快，服務一百分。",
+                "老客戶續約優惠多，老闆還會主動通知有哪些隱藏版折扣可以拿。",
+                "辦門號完全沒有任何隱藏費用，帳單明細解釋得清清楚楚。",
+                "
